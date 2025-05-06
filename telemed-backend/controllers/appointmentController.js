@@ -121,6 +121,33 @@ const rejectAppointment = async (req, res) => {
       return res.status(404).json({ message: "Appointment not found" });
     }
 
+    const doctor = await Doctor.findById(appointment.doctor);
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    // Restore the time slot
+    let availabilityForDate = doctor.availability.find(
+      (slot) => slot.date === appointment.date
+    );
+
+    if (availabilityForDate) {
+      // Add time back if it doesn't already exist
+      if (!availabilityForDate.timeSlots.includes(appointment.time)) {
+        availabilityForDate.timeSlots.push(appointment.time);
+        availabilityForDate.timeSlots.sort(); // optional
+      }
+    } else {
+      // If the date entry doesn't exist, create it
+      doctor.availability.push({
+        date: appointment.date,
+        timeSlots: [appointment.time],
+      });
+    }
+
+    await doctor.save();
+
+    // Handle refund if payment exists
     const payment = await Payment.findOne({ appointmentId });
     if (payment) {
       await handleRefund(payment);
@@ -132,7 +159,7 @@ const rejectAppointment = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Appointment rejected and refund initiated" });
+      .json({ message: "Appointment rejected and availability restored" });
   } catch (error) {
     console.error("Error rejecting appointment:", error);
     res.status(500).json({ message: "Error rejecting appointment" });

@@ -100,6 +100,75 @@ const deleteDoctor = async (req, res) => {
   }
 };
 
+// POST: Add availability to a doctor
+// POST: Add availability to a doctor
+const addAvailability = async (req, res) => {
+  const doctorId = req.params.id;
+  const { date, timeSlots } = req.body;
+
+  try {
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) return res.status(404).json({ message: "Doctor not found" });
+
+    // Convert the string date to a Date object for comparison
+    const formattedDate = new Date(date).toISOString().split("T")[0]; // format to YYYY-MM-DD
+
+    // Check if availability for this date already exists
+    const existing = doctor.availability.find((a) => {
+      return a.date.toISOString().split("T")[0] === formattedDate;
+    });
+
+    if (existing) {
+      // Merge time slots without duplicates
+      existing.timeSlots = Array.from(
+        new Set([...existing.timeSlots, ...timeSlots])
+      );
+    } else {
+      // Add new availability entry
+      doctor.availability.push({ date: formattedDate, timeSlots });
+    }
+
+    await doctor.save();
+
+    res.status(200).json({
+      message: "Availability updated successfully",
+      availability: doctor.availability,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error adding availability", error: err.message });
+  }
+};
+
+// GET: Get availability of a doctor
+const getAvailability = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id).select("availability");
+    if (!doctor) return res.status(404).json({ message: "Doctor not found" });
+
+    res.status(200).json(doctor.availability);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error fetching availability", error: err.message });
+  }
+};
+
+const getDoctorByUserId = async (req, res) => {
+  try {
+    const doctor = await Doctor.findOne({ user: req.params.userId });
+    if (!doctor) {
+      console.log("Doctor not found");
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+    res.status(200).json(doctor);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getDoctors,
   addDoctor,
@@ -107,4 +176,7 @@ module.exports = {
   rejectDoctor,
   getDoctorById,
   deleteDoctor,
+  addAvailability, // 👈 added availability route
+  getAvailability, // 👈 added availability route
+  getDoctorByUserId,
 };

@@ -2,17 +2,28 @@ const mongoose = require("mongoose");
 
 const doctorSchema = new mongoose.Schema(
   {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
     specialty: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
-    clinic: { type: String, required: true },
+    clinic: { type: String },
     bio: { type: String },
-    status: { type: String, default: "Pending" }, // Pending, Approved, Rejected
+    profileImage: { type: String },
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
+    },
+    availability: [
+      {
+        date: { type: Date, required: true },
+        timeSlots: [String],
+      },
+    ],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-const Doctor = mongoose.model("Doctor", doctorSchema);
-
-module.exports = Doctor;
+module.exports = mongoose.model("Doctor", doctorSchema);
