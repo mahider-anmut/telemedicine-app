@@ -15,7 +15,8 @@ class IntroWidget extends StatelessWidget {
     required this.skip,
     required this.image,
     required this.onTab,
-    required this.index,});
+    required this.index,
+    required this.fitImage});
 
   final Color color;
   final String title;
@@ -24,6 +25,7 @@ class IntroWidget extends StatelessWidget {
   final String image;
   final VoidCallback onTab;
   final int index;
+  final bool fitImage;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class IntroWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage(image),
-                    fit: BoxFit.contain
+                    fit: fitImage?BoxFit.fill:BoxFit.contain
                 )
             ),
           ),

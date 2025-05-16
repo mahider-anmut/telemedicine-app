@@ -76,12 +76,13 @@ class _IntroScreenState extends State<IntroScreen> {
               itemBuilder: (BuildContext context, int index){
                 return IntroWidget(
                   index: index,
-                  color: _pages[index]['color']=="primary"?AppTheme.getThemeExtension(context).primaryColor!:AppTheme.getThemeExtension(context).primaryBGColor!,
+                  color: _pages[index]['color']=="primary"?AppTheme.getThemeExtension(context).primaryColor!:AppTheme.getThemeExtension(context).primaryLightColor!,
                   title: _pages[index]['title'],
                   description: _pages[index]['description'],
                   image: _pages[index]['image'],
                   skip: _pages[index]['skip'],
                   onTab: onNextPage,
+                  fitImage: false,
                 );
               }
           ),
