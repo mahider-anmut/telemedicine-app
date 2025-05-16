@@ -1,0 +1,66 @@
+{
+  "SignOut": "ውጣ",
+  "Logout": "ውጣ",
+  "LogoutConfirmationMessage": "ከመለያዎ ለመውጣት እርግጠኛ ነህ/ነሽ?",
+
+  "SkipNow": "አሁን ዝለል",
+  "GetStarted": "ጀምር",
+
+  "Online" : "በመስመር ላይ",
+  "Offline" : "ወደቀረ",
+
+  "Loading": "በመጫን ላይ...",
+
+  "Search": "ፈልግ...",
+
+  "Home": "ቤት",
+  "Profile": "መገለጫ",
+  "QRCodeScannedSuccessfully": "ኪው አር ኮድ በትክክል ተነትሏል",
+  "InvalidQRCode":  "ልክ ያልሆነ ኪው አር ኮድ",
+  "CameraPermissionDenied": "የካሜራ ፈቃድ ተከልክሏል",
+
+  "Notifications": "ማሳወቂያዎች",
+  "All": "ሁሉም",
+  "System": "ሲስተም",
+  "Other": "ሌላ",
+  "Today": "ዛሬ",
+  "Yesterday": "ትላንት",
+  "NoMessage": "መልእክት የለም",
+  "NoDate": "ቀን የለም",
+  "NoItemsFound": "ምንም ነገር አልተገኘም.",
+
+  "DarkMode": "ጨለማ ሁኔታ",
+  "Account": "መለያ",
+  "TermsAndConditions": "ውሎች እና ሁኔታዎች",
+  "HelpAndFAQs": "እርዳታ እና ተደጋጋሚ ጥያቄዎች",
+  "About": "ስለ",
+
+  "forgotPasswordTitle": "የይለፍ ቃልዎን ረስተዋል?",
+  "email": "ኢሜይል",
+  "sendResetLink": "የማስጀመሪያ አገናኝ ላክ",
+  "alreadyHaveAccount": "አንድ መለያ አለህ/አለሽ?",
+  "loginNow": "አሁን ግባ",
+
+  "welcomeBack": "እንኳን ወደኋላ በደህና መጡ!",
+  "password": "የይለፍ ቃል",
+  "forgotPassword": "የይለፍ ቃል ረስተዋል?",
+  "login": "ግባ",
+  "orLoginWith": "ወይም በዚህ ግባ",
+  "dontHaveAccount": "መለያ የለህ/የለሽም?",
+  "registerNow": "አሁን ይመዝገቡ",
+
+  "goBack": "ተመለስ",
+
+  "helloLetsGetStarted": "ሰላም! እንጀምር",
+  "confirmPassword": "የይለፍ ቃል አረጋግጥ",
+  "register": "ይመዝገቡ",
+  "orRegisterWith": "ወይም በዚህ ይመዝገቡ",
+  "alreadyHaveAnAccount": "አንድ መለያ አለህ/አለሽ?",
+
+  "firstName": "የመጀመሪያ ስም",
+  "lastName": "የአያት ስም",
+  "phoneNumber": "ስልክ ቁጥር",
+  "submit": "አስገባ",
+
+  "Language": "ቋንቋ"
+}

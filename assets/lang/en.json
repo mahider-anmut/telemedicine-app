@@ -1,0 +1,68 @@
+{
+  "SignOut": "Sign out",
+  "Logout": "Logout",
+  "LogoutConfirmationMessage": "Are you sure you want to logout of your account?",
+
+  "SkipNow": "Skip Now",
+  "GetStarted": "Get Started",
+
+  "Online" : "Online",
+  "Offline" : "Offline",
+
+  "Loading": "Loading...",
+
+  "Search": "Search...",
+
+  "Home": "Home",
+  "Profile": "Profile",
+  "QRCodeScannedSuccessfully": "QR code scanned successfully",
+  "InvalidQRCode":  "Invalid QR code",
+  "CameraPermissionDenied": "Camera permission denied",
+
+  "Notifications": "Notifications",
+  "All": "All",
+  "System": "System",
+  "Other": "Other",
+  "Today": "Today",
+  "Yesterday": "Yesterday",
+  "NoMessage": "No Message",
+  "NoDate": "No Date",
+  "NoItemsFound": "No Items Found.",
+
+  "DarkMode": "Dark mode",
+  "Account": "Account",
+  "TermsAndConditions": "Terms and Conditions",
+  "HelpAndFAQs": "Help & FAQs",
+  "About": "About",
+
+
+  "forgotPasswordTitle": "Forget your password?",
+  "email": "Email",
+  "sendResetLink": "Send Reset Link",
+  "alreadyHaveAccount": "Already have an account? ",
+  "loginNow": "Login Now",
+
+  "welcomeBack": "Welcome back!",
+  "password": "Password",
+  "forgotPassword": "Forgot Password?",
+  "login": "Login",
+  "orLoginWith": "or login with",
+  "dontHaveAccount": "Don't have an account? ",
+  "registerNow": "Register Now",
+
+  "goBack": "Go Back",
+
+  "helloLetsGetStarted": "Hello! Lets get started",
+  "confirmPassword": "Confirm Password",
+  "register": "Register",
+  "orRegisterWith": "or register with",
+  "alreadyHaveAnAccount": "Already have an account ? ",
+
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "phoneNumber": "Phone Number",
+  "submit": "Submit",
+
+  "Language": "Language"
+
+}
