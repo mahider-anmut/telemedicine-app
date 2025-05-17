@@ -22,15 +22,15 @@ class SideMenu extends StatefulWidget {
 }
 
 class _SideMenuState extends State<SideMenu> {
-  String firstName = "Mahider";
-  String lastName = "Anmut";
-  String role ="User";
+  String firstName = "";
+  String lastName = "";
+  String role ="";
 
   @override
   void initState() {
     super.initState();
 
-    // checkFirst();
+    checkFirst();
   }
 
   checkFirst() async {
