@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:telemedicine/constants/assets.dart';
+import 'package:telemedicine/service/permission_service.dart';
 import 'package:telemedicine/view/mainPage/mainPage.dart';
 
 import '../service/localization.dart';
 import '../utils/themes.dart';
+import '../utils/utils.dart';
 import 'ProfilePage.dart';
+import 'modals/ambulanceModal.dart';
 import 'patient/patientPage.dart';
 import 'sideMenu.dart';
 
@@ -268,7 +271,23 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppTheme.getThemeExtension(context).primaryLightColor!,
           // backgroundColor: AppTheme.getThemeExtension(context).primaryColor!,
           onPressed: () async {
-
+            bool hasPermission = await requestLocationPermission();
+            if (hasPermission) {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                enableDrag: false,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32.0),
+                    topRight: Radius.circular(32.0),
+                  ),
+                ),
+                builder: (context) => const AmbulanceModal(),
+              );
+            } else {
+              Utils.showToast(AppLocalizations.of(context).translate('locationPermissionDenied'),type: "info");
+            }
           },
           child: Image(
             image: AssetImage(LocalAssets.ambulanceIcon),
