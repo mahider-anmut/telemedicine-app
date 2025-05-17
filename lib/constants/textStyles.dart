@@ -42,7 +42,7 @@ class AppTextStyles {
         fontWeight: FontWeight.w500,
         color: AppTheme
             .getThemeExtension(context)
-            .mainTextColor!
+            .mainTextAltColor!
     );
   }
 
@@ -128,7 +128,7 @@ class AppTextStyles {
           fontWeight: FontWeight.w700,
           color: AppTheme
               .getThemeExtension(context)
-              .titleTextColor
+              .mainTextAltColor
       );
     }
 
