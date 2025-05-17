@@ -5,12 +5,23 @@ import 'fontSizes.dart';
 
 class AppTextStyles {
 
-  static const TextStyle titleStyle = TextStyle(
-      fontFamily: 'Urbanist',
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: AppColors.titleTextColor
-  );
+  // static const TextStyle titleStyle = TextStyle(
+  //     fontFamily: 'Urbanist',
+  //     fontSize: AppFontSizes.large,
+  //     fontWeight: FontWeight.w700,
+  //     color: AppColors.titleTextColor
+  // );
+
+  static TextStyle titleStyle(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'Urbanist',
+        fontSize: AppFontSizes.large,
+        fontWeight: FontWeight.w700,
+        color: AppTheme
+            .getThemeExtension(context)
+            .titleTextColor!
+    );
+  }
 
   static TextStyle bigTitleStyle(BuildContext context) {
     return TextStyle(

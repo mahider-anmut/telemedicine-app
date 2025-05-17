@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'TeleMedicine',
+      debugShowCheckedModeBanner: false,
       theme: themeProvider.theme,
       locale: localeProvider.locale,
       supportedLocales: const [
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const SplashScreen(),
+      home:  const SplashScreen(),
     );
   }
 }

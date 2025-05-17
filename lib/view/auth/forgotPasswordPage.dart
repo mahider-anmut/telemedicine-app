@@ -45,7 +45,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         localizations.translate("forgotPasswordTitle"),
                         style: AppTextStyles.bigTitleStyle(context),
                       ),
-                      const SizedBox(height: 90.0),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        localizations.translate("forgotPasswordDescription"),
+                        style: AppTextStyles.bodySmallStyle(context),
+                      ),
+                      const SizedBox(height: 50.0),
                       SizedBox(
                         height: 56,
                         child: TextField(
@@ -65,10 +70,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       CustomElevatedButton(
                         label: localizations.translate("sendResetLink"),
                         onPressed: () async {
-                          // await AuthController.onForgotPasswordPressed(
-                          //   emailController.text,
-                          //   context,
-                          // );
+                          await AuthController.onForgotPasswordPressed(
+                            emailController.text,
+                            context,
+                          );
                         },
                       ),
                       const SizedBox(height: 30.0),

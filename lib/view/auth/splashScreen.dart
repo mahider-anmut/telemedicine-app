@@ -1,14 +1,14 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:telemedicine/constants/textStyles.dart';
 
 import '../../constants/assets.dart';
-import '../../constants/colors.dart';
 import '../../constants/constants.dart';
 import '../../service/shared_preference.dart';
+import '../../utils/themes.dart';
 import '../homePage.dart';
 import 'introPage.dart';
 import 'loginPage.dart';
-import 'pending.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,106 +17,69 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.loose,
-        children: [
-          // Background image
-          Image.asset(
-            LocalAssets.splashScreen, // Make sure to define this in your assets
-            fit: BoxFit.cover,
-          ),
-
-          // Foreground content
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DisappearingWidget(
-                    duration: const Duration(milliseconds: 5000),
-                    child: Image.asset(
-                      LocalAssets.appLogo,
-                      height: 200,
-                    ),
-                  ),
-                ],
-              ),
-              Text("TeleMedicine",style: AppTextStyles.bigTitleStyle(context)),
-              SizedBox(height: 30,)
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class DisappearingWidget extends StatefulWidget {
-  final Widget child;
-  final Duration duration;
-
-  const DisappearingWidget({
-    required this.child,
-    required this.duration,
-    super.key,
-  });
-
-  @override
-  _DisappearingWidgetState createState() => _DisappearingWidgetState();
-}
-
-class _DisappearingWidgetState extends State<DisappearingWidget>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<Offset> _slideAnimation;
+  late Animation<Offset> _imageAnimation;
+  late Animation<Offset> _freshAnimation;
+  late Animation<Offset> _martAnimation;
+  late Animation<Offset> _groceryAppAnimation;
+  late Animation<double> _opacityAnimation;
 
   @override
   void initState() {
     super.initState();
 
+    // Initialize the animation controller
     _controller = AnimationController(
-      duration: widget.duration,
+      duration: const Duration(seconds: 5),
       vsync: this,
     );
 
-    // Slide animation: start from left (-1) and end at the center (0)
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(-1.0, 0.0), // Start off-screen to the left
-      end: const Offset(0.0, 0.0),    // End at the center
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+    // Define the slide animations
+    _imageAnimation = Tween<Offset>(
+      begin: const Offset(0, -10),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
-    _slideAnimation.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        checkFirstLaunch();
-      }
+    _freshAnimation = Tween<Offset>(
+      begin: const Offset(-10, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    _martAnimation = Tween<Offset>(
+      begin: const Offset(10, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    _groceryAppAnimation = Tween<Offset>(
+      begin: const Offset(0, 20),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    // Define the opacity animation
+    _opacityAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    // Start the animation
+    _controller.forward();
+
+    // Set up a timer to navigate to the next screen after the animation completes
+    Timer(const Duration(seconds: 7), () {
+      checkFirstLaunch();
     });
+  }
 
-    // Start the animation after a short delay
-    Future.delayed(const Duration(milliseconds: 500))
-        .then((value) => _controller.forward());
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Future<void> checkFirstLaunch() async {
     bool didFirstLaunch = await SharedPreference.getBool(Constants.didFirstLaunch);
     bool isLoggedIn = await SharedPreference.getBool(Constants.isLoggedIn);
-    bool requestingApproval = await SharedPreference.getBool(Constants.requestingApproval);
-    bool approved = await SharedPreference.getBool(Constants.approved);
 
     if (!didFirstLaunch) {
       Navigator.pushReplacement(
@@ -124,15 +87,10 @@ class _DisappearingWidgetState extends State<DisappearingWidget>
         MaterialPageRoute(builder: (context) => const IntroScreen()),
       );
     } else {
-      if (isLoggedIn && !requestingApproval && approved) {
+      if (isLoggedIn) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      } else if (isLoggedIn && requestingApproval) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const AccountApprovalPendingPage()),
         );
       } else {
         Navigator.pushReplacement(
@@ -144,16 +102,78 @@ class _DisappearingWidgetState extends State<DisappearingWidget>
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _slideAnimation,
-      child: widget.child,
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Center(
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SlideTransition(
+                          position: _imageAnimation,
+                          child: Image.asset(
+                            LocalAssets.splashScreen,
+                            width: 700,
+                            height: 500,
+                          ),
+                        ),
+                        const SizedBox(height: 20), // Space between image and text
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SlideTransition(
+                              position: _freshAnimation,
+                              child: Text(
+                                'Tele',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.getThemeExtension(context).primaryLightColor!
+                                ),
+                              ),
+                            ),
+                            SlideTransition(
+                              position: _martAnimation,
+                              child: Text(
+                                'medicine',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.getThemeExtension(context).primaryLightColor!
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20), // Space between text and Grocery App
+                        SlideTransition(
+                          position: _groceryAppAnimation,
+                          child: Text(
+                            '"Bringing Doctors Closer to You."',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppTheme.getThemeExtension(context).primaryLightColor!,
+                              // fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

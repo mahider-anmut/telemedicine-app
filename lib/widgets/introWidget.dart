@@ -60,7 +60,7 @@ class IntroWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 62,),
-                    Text(title, style: AppTextStyles.titleStyle),
+                    Text(title, style: AppTextStyles.titleStyle(context)),
                     const SizedBox(height: 16,),
                     Text(description, style: const TextStyle(fontSize: 18, height: 1.5, color: Colors.grey), textAlign: TextAlign.center,)
                   ],
