@@ -28,7 +28,7 @@ class HeaderCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

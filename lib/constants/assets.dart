@@ -31,8 +31,9 @@ class LocalAssets {
   static const String helpIcon = '$baseIcons/help.png';
   static const String logoutIcon = '$baseIcons/logout.png';
   static const String homeIcon = '$baseIcons/home.png';
-  static const String appointmentIcon = '$baseIcons/appointment.png';
+  static const String appointmentIcon = '$baseIcons/appointment2.png';
   static const String consultingIcon = '$baseIcons/consultation.png';
+  static const String favouritesIcon = '$baseIcons/favourite.png';
 
 
 
