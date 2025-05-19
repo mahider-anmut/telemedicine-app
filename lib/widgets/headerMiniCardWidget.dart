@@ -19,17 +19,17 @@ class HeaderMiniCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.12,
-      decoration: const BoxDecoration(
+      decoration:  BoxDecoration(
         // borderRadius: BorderRadius.only(
         //   bottomLeft: Radius.circular(60),
         //   bottomRight: Radius.circular(60),
         // ),
-        image: DecorationImage(
-          image: AssetImage(LocalAssets.bgHeaderImage), // Change path to your image
-          fit: BoxFit.cover,
-          alignment: Alignment(-0.2,-0.2),
-        ),
-        //color: AppTheme.getThemeExtension(context).primaryColor!
+        // image: DecorationImage(
+        //   image: AssetImage(LocalAssets.bgHeaderImage), // Change path to your image
+        //   fit: BoxFit.cover,
+        //   alignment: Alignment(-0.2,-0.2),
+        // ),
+        color: AppTheme.getThemeExtension(context).primaryColor!
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
