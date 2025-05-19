@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:telemedicine/view/pharmacy/PharmacyItem.dart';
+
+
+import '../../constants/colors.dart';
+import '../../widgets/custom/customtextfield.dart';
+import '../../widgets/custom/detailstext1.dart';
+import '../../widgets/custom/text11.dart';
+import '../../widgets/headerMiniCardWidget.dart';
+
+
+class Pharmacy extends StatelessWidget {
+  const Pharmacy({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HeaderMiniCardWidget(title: "Pharmacy",),
+            SizedBox(height: 8.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: const CustomTextField(
+                label: 'Search Pharmacy',
+                icon: Icons.search,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text1(text1: 'Pharmacies (1 record)'),
+                  InkWell(
+
+                    child: const Text11(
+                      text2: 'Sort By: Distance',
+                      color: AppColors.text3Color,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 8.0),
+            PharmacyItem(),
+            PharmacyItem(),
+            PharmacyItem()
+
+
+          ],
+        ),
+      ),
+    );
+  }
+}
