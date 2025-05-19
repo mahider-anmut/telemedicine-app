@@ -22,7 +22,7 @@ class Hospitals extends StatelessWidget {
             HeaderMiniCardWidget(title: "Hospitals",),
             SizedBox(height: 8.0),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: const CustomTextField(
                 label: 'Search hospitals',
                 icon: Icons.search,

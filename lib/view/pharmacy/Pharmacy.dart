@@ -22,7 +22,7 @@ class Pharmacy extends StatelessWidget {
             HeaderMiniCardWidget(title: "Pharmacy",),
             SizedBox(height: 8.0),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: const CustomTextField(
                 label: 'Search Pharmacy',
                 icon: Icons.search,
