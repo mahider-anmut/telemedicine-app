@@ -28,7 +28,7 @@ class HeaderCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -38,23 +38,29 @@ class HeaderCardWidget extends StatelessWidget {
                         Scaffold.of(context).openDrawer();
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Text(
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: const Text(
                         'Current Location',
                         textAlign: TextAlign.center,
                         style: AppTextStyles.headerTextLabelStyle,
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.notifications,color: AppColors.mainIconColor!,),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => NotificationPage()),
-                        );
-                      },
-                    ),
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: AppColors.buttonColor,
+                      child: IconButton(
+                        icon: Icon(Icons.notifications,color: AppColors.mainIconColor!,),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NotificationPage()),
+                          );
+                        },
+                      )
+
+                    )
+                    ,
                   ],
                 ),
               ),
