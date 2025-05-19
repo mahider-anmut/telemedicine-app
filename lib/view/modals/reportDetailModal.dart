@@ -18,20 +18,9 @@ class ReportDetailModal extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.text3Color)),
-                      height: 30,
-                      width: 30,
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 17,
-                      ),
-                    ),
+
                     const Spacer(),
-                    const Text1(text1: 'Care Prescriptions Details'),
+                    const Text1(text1: 'Report Details'),
                     const Spacer(),
 
                   ],

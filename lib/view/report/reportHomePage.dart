@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../widgets/custom/detailstext1.dart';
 import '../../widgets/custom/detailstext2.dart';
@@ -19,20 +20,9 @@ class ReportHomePage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.text3Color)),
-                        height: 30,
-                        width: 30,
-                        child: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 17,
-                        ),
-                      ),
+
                       const Spacer(),
-                      const Text1(text1: 'Care Prescriptions'),
+                      const Text1(text1: 'Reports'),
                       const Spacer(),
 
                     ],
@@ -86,28 +76,36 @@ class ReportItem extends StatelessWidget {
           color: AppColors.tabColor,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Row(
+        child:  Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CircleAvatar(
-              radius:26,
-              backgroundImage: AssetImage('assets/images/img/m3.png'),
+                radius: 20,
+                backgroundColor: AppColors.buttonColor,
+                child: Icon(Icons.list_alt_outlined,color: AppColors.mainIconColor!,),
 
             ),
-            Spacer(),
+            // Spacer(),
+            SizedBox(width: 30,),
+
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text1(text1: 'jamshed urooj'),
+                  Text1(text1: 'Report Title'),
+
                   SizedBox(height: 8,),
-                  Text2(text2: '9th Sep,2024')
-
-
+                  Row(
+                    children: [
+                      Text2(text2: 'Doctor 1'),
+                      Spacer(),
+                      Text2(text2: '9th Sep,2024'),
+                    ],
+                  )
                 ],
-
               ),
-            )
+            ),
+
 
 
 
