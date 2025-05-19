@@ -5,6 +5,7 @@ import '../../constants/colors.dart';
 import '../../widgets/custom/customtextfield.dart';
 import '../../widgets/custom/detailstext1.dart';
 import '../../widgets/custom/detailstext2.dart';
+import '../../widgets/custom/text11.dart';
 import '../../widgets/headerMiniCardWidget.dart';
 import '../modals/reportDetailModal.dart';
 
@@ -27,6 +28,17 @@ class ReportHomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text1(text1: 'Reports (1 record)'),
+                  Spacer()
+                ],
+              ),
+            ),
+            SizedBox(height: 8.0),
 
             const ReportItem(),
             const ReportItem(),
