@@ -13,6 +13,9 @@ class Constants {
 
   static const String requestingApproval = "requestingApproval";
 
+  static const String doctorRole = "doctor";
+  static const String patientRole = "patient";
+
 }
 
 

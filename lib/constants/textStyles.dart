@@ -42,7 +42,7 @@ class AppTextStyles {
         fontWeight: FontWeight.w500,
         color: AppTheme
             .getThemeExtension(context)
-            .mainTextAltColor!
+            .mainTextColor!
     );
   }
 
@@ -131,6 +131,17 @@ class AppTextStyles {
               .mainTextAltColor
       );
     }
+
+  static TextStyle sideMenuBodySmallStyle(BuildContext context) {
+    return TextStyle(
+        fontFamily: 'Urbanist',
+        fontSize: AppFontSizes.small,
+        fontWeight: FontWeight.w500,
+        color: AppTheme
+            .getThemeExtension(context)
+            .mainTextAltColor!
+    );
+  }
 
     static const TextStyle cardTitleStyle = TextStyle(
         fontFamily: 'Urbanist',

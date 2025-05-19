@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/assets.dart';
+import '../../constants/colors.dart';
 import '../../constants/constants.dart';
 import '../../constants/textStyles.dart';
 import '../../controller/authController.dart';
@@ -68,7 +69,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.person),
+                                // const Icon(Icons.person),
+                                Image(
+                                  image: AssetImage(LocalAssets.userIcon),
+                                  width: 18, // Optional: adjust size
+                                  height: 18,
+                                ),
                                 const SizedBox(width: 8),
                                 Text(localizations.translate("users")),
                               ],
@@ -78,7 +84,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.medical_information),
+                                Image(
+                                  image: AssetImage(LocalAssets.doctorIcon),
+                                  width: 20, // Optional: adjust size
+                                  height: 20,
+                                ),
                                 const SizedBox(width: 8),
                                 Text(localizations.translate("doctors")),
                               ],

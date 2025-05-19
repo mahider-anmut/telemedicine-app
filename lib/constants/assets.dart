@@ -34,6 +34,7 @@ class LocalAssets {
   static const String appointmentIcon = '$baseIcons/appointment2.png';
   static const String consultingIcon = '$baseIcons/consultation.png';
   static const String favouritesIcon = '$baseIcons/favourite.png';
+  static const String favouritesAltIcon = '$baseIcons/favourite2.png';
 
 
 
