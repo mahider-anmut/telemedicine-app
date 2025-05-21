@@ -7,7 +7,7 @@ let isAuthenticated = (req,res,next) => {
 	if(typeof bearerHeader !== 'undefined'){
 		let bearer = bearerHeader.split(" ");
 		let bearerToken = bearer[1];
-		jwt.verify(bearerToken,config.EnVar.JWT_KEY,function(err,pass){
+		jwt.verify(bearerToken,process.env.JWT_SECRET,function(err,pass){
 			if(err){
 				res.status(401).send("Authentication Failed");
 			}else{
