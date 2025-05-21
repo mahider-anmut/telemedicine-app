@@ -1,29 +1,26 @@
-// routes/appointmentRoutes.js
 const express = require("express");
+const router = express.Router();
 const {
   createAppointment,
-  getAppointmentsByPatient,
-  getAppointmentsByDoctor,
-  confirmAppointment,
-  rejectAppointment,
+  getAppointmentsByUser,
+  getAppointmentsForDoctor,
+  updateAppointmentStatus,
+  markAppointmentAsPaid,
 } = require("../controllers/appointmentController");
 
-const router = express.Router();
-
-// Appointment routes
-// Route to create a new appointment (after payment is confirmed)
+// Create new appointment
 router.post("/", createAppointment);
 
-// Route to get all appointments of a specific patient by patient ID
-router.get("/patient/:id", getAppointmentsByPatient);
+// Get appointments for current patient
+router.get("/", getAppointmentsByUser);
 
-// Route to get all appointments of a specific doctor by doctor ID
-router.get("/doctor/:id", getAppointmentsByDoctor);
+// Get appointments for doctor
+router.get("/doctor/:doctorId", getAppointmentsForDoctor);
 
-// Route to confirm an appointment by appointment ID
-router.patch("/:id/confirm", confirmAppointment);
+// Doctor confirms or declines appointment
+router.put("/:id/status", updateAppointmentStatus);
 
-// Route to reject an appointment by appointment ID (and refund)
-router.patch("/:id/reject", rejectAppointment);
+// Patient marks appointment as paid
+router.put("/:id/pay", markAppointmentAsPaid);
 
 module.exports = router;

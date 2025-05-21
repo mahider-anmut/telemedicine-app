@@ -169,6 +169,105 @@ const getDoctorByUserId = async (req, res) => {
   }
 };
 
+const updateAvailability = async (req, res) => {
+  try {
+    const { doctorId, availabilityId } = req.params;
+    const { timeSlots } = req.body; // Expecting timeSlots array from the request
+
+    if (!timeSlots || !Array.isArray(timeSlots) || timeSlots.length === 0) {
+      return res.status(400).json({ message: "Invalid or missing time slots" });
+    }
+
+    // Validate that all time slots are valid strings
+    for (const time of timeSlots) {
+      if (typeof time !== "string" || !time.trim()) {
+        return res.status(400).json({ message: `Invalid time slot: ${time}` });
+      }
+    }
+
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    const availability = doctor.availability.id(availabilityId);
+    if (!availability) {
+      return res.status(404).json({ message: "Availability not found" });
+    }
+
+    // Check if any of the time slots already exist
+    for (const newTime of timeSlots) {
+      if (availability.timeSlots.includes(newTime.trim())) {
+        return res
+          .status(400)
+          .json({ message: `Time slot already exists: ${newTime}` });
+      }
+    }
+
+    // Add new time slots to the availability
+    availability.timeSlots.push(...timeSlots.map((time) => time.trim()));
+
+    await doctor.save();
+
+    res.status(200).json({
+      message: "Time slots added successfully",
+      availability: doctor.availability,
+    });
+  } catch (error) {
+    console.error("Error updating availability:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const deleteAvailability = async (req, res) => {
+  const { doctorId, availabilityId } = req.params;
+
+  console.log("doctorId:", doctorId);
+  console.log("availabilityId:", availabilityId);
+
+  try {
+    // Find the doctor by ID
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    // Find the availability by availabilityId and remove it from the availability array
+    const availabilityIndex = doctor.availability.findIndex(
+      (avail) => avail._id.toString() === availabilityId
+    );
+
+    if (availabilityIndex === -1) {
+      return res.status(404).json({ message: "Availability not found" });
+    }
+
+    // Remove the availability from the array
+    doctor.availability.splice(availabilityIndex, 1);
+
+    // Save the updated doctor document
+    doctor.markModified("availability");
+    await doctor.save();
+
+    res.status(200).json({ message: "Availability removed successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// GET: Approved doctors with non-empty availability
+const getAvailableDoctors = async (req, res) => {
+  try {
+    const doctors = await Doctor.find({
+      availability: { $exists: true, $not: { $size: 0 } },
+    }).select("name specialty profileImage availability");
+
+    res.status(200).json(doctors);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching available doctors" });
+  }
+};
+
 module.exports = {
   getDoctors,
   addDoctor,
@@ -179,4 +278,7 @@ module.exports = {
   addAvailability, // 👈 added availability route
   getAvailability, // 👈 added availability route
   getDoctorByUserId,
+  updateAvailability,
+  deleteAvailability,
+  getAvailableDoctors,
 };
