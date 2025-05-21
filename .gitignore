@@ -1,0 +1,30 @@
+# Dependency directories
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Temporary files
+temp/
+
+# IDE config files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage directory used by testing tools
+coverage/
+
+# Release configurations
+.release-it.json
+
+# Ignore eslint configuration cache
+.eslintcache
