@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:telemedicine/constants/assets.dart';
-import 'package:telemedicine/view/hospitals/hospitals.dart';
+import 'package:telemedicine/view/hospitals/hospitalsHomePage.dart';
 import 'package:telemedicine/view/prescribtions/prescribtionHomePage.dart';
 import '../../constants/constants.dart';
 import '../../constants/textStyles.dart';
@@ -11,7 +11,7 @@ import '../../widgets/infoCardWidget.dart';
 import '../appointments/appointmentHomePage.dart';
 import '../checkup/checkupHomePage.dart';
 import '../doctors/doctorsHomePage.dart';
-import '../pharmacy/Pharmacy.dart';
+import '../pharmacy/pharmacyHomePage.dart';
 import '../report/reportHomePage.dart';
 
 
@@ -40,7 +40,7 @@ class MainPage extends StatelessWidget {
                   onTap: () async {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Pharmacy()),
+                      MaterialPageRoute(builder: (context) => const PharmacyHomePage()),
                     );
                   },
                   child: InfoCardWidget(
@@ -54,7 +54,7 @@ class MainPage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Hospitals()),
+                      MaterialPageRoute(builder: (context) => const HospitalsHomePage()),
                     );
                   },
                   child: InfoCardWidget(

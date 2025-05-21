@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:telemedicine/view/checkup/checkupHomePage.dart';
+import 'package:telemedicine/view/doctors/doctorsHomePage.dart';
+import 'package:telemedicine/view/favorites/favoritesHomePage.dart';
+import 'package:telemedicine/view/hospitals/hospitalsHomePage.dart';
+import 'package:telemedicine/view/notificationPage.dart';
+import 'package:telemedicine/view/prescribtions/prescribtionHomePage.dart';
 
 
 import '../constants/assets.dart';
@@ -10,7 +16,8 @@ import '../utils/themes.dart';
 import '../utils/utils.dart';
 import 'auth/loginPage.dart';
 import 'homePage.dart';
-import 'patient/patientPage.dart';
+import 'pharmacy/pharmacyHomePage.dart';
+import 'report/reportHomePage.dart';
 
 
 class SideMenu extends StatefulWidget {
@@ -24,7 +31,7 @@ class SideMenu extends StatefulWidget {
 class _SideMenuState extends State<SideMenu> {
   String firstName = "";
   String lastName = "";
-  String role ="";
+  String role ="User";
 
   @override
   void initState() {
@@ -56,11 +63,16 @@ class _SideMenuState extends State<SideMenu> {
               child: Text("$firstName $lastName",style:AppTextStyles.sideMenuNameStyle(context)),
             ),
             decoration: BoxDecoration(
-              color: AppTheme.getThemeExtension(context).primaryColor!,
+              // color: AppTheme.getThemeExtension(context).primaryColor!,
+              image: DecorationImage(
+                image: AssetImage(LocalAssets.bgHeaderImage), // Change path to your image
+                fit: BoxFit.cover,
+                alignment: Alignment(0.6,-0.5),
+              ),
             ),
             accountEmail: Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: Text(role,style:AppTextStyles.bodySmallStyle(context)),
+              child: Text(role,style:AppTextStyles.sideMenuBodySmallStyle(context)),
             ),
             currentAccountPicture: const Padding(
               padding: EdgeInsets.only(left: 20.0),
@@ -72,12 +84,39 @@ class _SideMenuState extends State<SideMenu> {
           SizedBox(
             height: 45,
             child: ListTile(
+              title:  Text(AppLocalizations.of(context).translate('Favourites'),style:AppTextStyles.sideMenuTitleStyle(context)),
+              leading:  const Image(image: AssetImage(LocalAssets.favouritesIcon),width: 22, height: 22,),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FavoritesHomePage()),
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 45,
+            child: ListTile(
+              title:  Text(AppLocalizations.of(context).translate('Notifications'),style:AppTextStyles.sideMenuTitleStyle(context)),
+              leading:  const Image(image: AssetImage(LocalAssets.notificationIcon),width: 22, height: 22,),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationPage()),
+                );
+              },
+            ),
+          ),
+          const Divider(),
+          SizedBox(
+            height: 45,
+            child: ListTile(
               title:  Text(AppLocalizations.of(context).translate('Hospitals'),style:AppTextStyles.sideMenuTitleStyle(context)),
               leading:  const Image(image: AssetImage(LocalAssets.hospitalIcon),width: 22, height: 22,),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => HospitalsHomePage()),
                 );
               },
             ),
@@ -90,7 +129,7 @@ class _SideMenuState extends State<SideMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => PharmacyHomePage()),
                 );
               },
             ),
@@ -103,7 +142,7 @@ class _SideMenuState extends State<SideMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => DoctorsHomePage()),
                 );
               },
             ),
@@ -119,7 +158,7 @@ class _SideMenuState extends State<SideMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => ReportHomePage()),
                 );
               },
             ),
@@ -132,7 +171,7 @@ class _SideMenuState extends State<SideMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => PrescriptionHomePage()),
                 );
               },
             ),
@@ -145,7 +184,7 @@ class _SideMenuState extends State<SideMenu> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => CheckupHomePage()),
                 );
               },
             ),

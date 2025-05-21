@@ -9,8 +9,8 @@ import '../../widgets/custom/text11.dart';
 import '../../widgets/headerMiniCardWidget.dart';
 
 
-class Pharmacy extends StatelessWidget {
-  const Pharmacy({super.key});
+class PharmacyHomePage extends StatelessWidget {
+  const PharmacyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

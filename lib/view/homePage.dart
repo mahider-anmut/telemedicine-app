@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:telemedicine/constants/assets.dart';
 import 'package:telemedicine/service/permission_service.dart';
+import 'package:telemedicine/view/appointments/appointmentHomePage.dart';
+import 'package:telemedicine/view/consultations/consultationHomePage.dart';
 import 'package:telemedicine/view/mainPage/mainPage.dart';
 
 import '../service/localization.dart';
 import '../utils/themes.dart';
 import '../utils/utils.dart';
 import 'ProfilePage.dart';
+import 'favorites/favoritesHomePage.dart';
 import 'modals/ambulanceModal.dart';
-import 'patient/patientPage.dart';
 import 'sideMenu.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,12 +31,12 @@ class _HomePageState extends State<HomePage> {
         return MainPage();
       case 'profile':
         return ProfilePage();
-      case 'vehicles':
-        return PatientPage();
-      case 'trips':
-        return PatientPage();
+      case 'favourites':
+        return FavoritesHomePage();
+      case 'consultation':
+        return ConsultationHomePage();
       default:
-        return PatientPage();
+        return MainPage();
     }
   }
 
@@ -116,11 +118,11 @@ class _HomePageState extends State<HomePage> {
                         child: InkWell(
                           onTap: () {
                             setState(() {
-                              activePage = "Appointments";
+                              activePage = "favourites";
                             });
                           },
                           child: Image(
-                            image: AssetImage(LocalAssets.appointmentIcon),
+                            image: AssetImage(LocalAssets.favouritesAltIcon),
                             width: 22, // Optional: adjust size
                             height: 22,
                           ),
@@ -142,14 +144,14 @@ class _HomePageState extends State<HomePage> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            activePage = "Appointments";
+                            activePage = "favourites";
                           });
                         },
                         child: Text(
-                          AppLocalizations.of(context).translate('Appointments'),
+                          AppLocalizations.of(context).translate('Favourites'),
                           style: TextStyle(
                             fontSize: 12.0,
-                            color: activePage == "Appointments"
+                            color: activePage == "favourites"
                                 ? AppTheme.getThemeExtension(context).primaryColor!
                                 : AppTheme.getThemeExtension(context).secondaryIconColor!,
                           ),
@@ -165,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                         child: InkWell(
                           onTap: () {
                             setState(() {
-                              activePage = "Consultation";
+                              activePage = "consultation";
                             });
                           },
                           child: Image(
@@ -191,14 +193,14 @@ class _HomePageState extends State<HomePage> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            activePage = "Consultation";
+                            activePage = "consultation";
                           });
                         },
                         child: Text(
                           AppLocalizations.of(context).translate('Consultation'),
                           style: TextStyle(
                             fontSize: 12.0,
-                            color: activePage == "Consultation"
+                            color: activePage == "consultation"
                                 ? AppTheme.getThemeExtension(context).primaryColor!
                                 : AppTheme.getThemeExtension(context).secondaryIconColor!,
                           ),
