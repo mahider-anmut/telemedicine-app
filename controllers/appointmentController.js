@@ -1,85 +1,116 @@
 const Appointment = require("../models/Appointment");
+const { isTimeSlotAvailable } = require("../utils/scheduleUtils");
 
-// Create new appointment
-exports.createAppointment = async (req, res) => {
-  try {
-    const appointment = new Appointment({
-      ...req.body,
-      patientId: req.body.patientId || "000000000000000000000000", // temp fallback
-    });
-
-    const saved = await appointment.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    console.error("Create error:", err);
-    res.status(500).json({ message: "Failed to create appointment" });
-  }
+let getAppointmentById = (req, res) => {
+  Appointment.findById(req.params.id)
+    .then((appointment) => {
+      if (!appointment) return res.status(404).json({ message: "Appointment not found" });
+      res.json(appointment);
+    })
+    .catch((err) => res.status(400).json({ message: err.message }));
 };
 
-// Get appointments for a patient
-exports.getAppointmentsByUser = async (req, res) => {
-  try {
-    const patientId = req.query.patientId; // use req.user._id if using auth middleware
-    const appointments = await Appointment.find({ patientId });
-    res.json(appointments);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch appointments" });
-  }
+let getAppointmentByUserId = (req, res) => {
+  Appointment.find({ userId: req.params.userId })
+    .then((appointments) => res.json(appointments))
+    .catch((err) => res.status(400).json({ message: err.message }));
 };
 
-// Get appointments for a doctor
-exports.getAppointmentsForDoctor = async (req, res) => {
-  try {
-    const { doctorId } = req.params;
-
-    const appointments = await Appointment.find({ doctorId }).populate(
-      "patientId",
-      "name email"
-    );
-    res.json(appointments);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch doctor appointments" });
-  }
+let getAllAppointments = (req, res) => {
+  Appointment.find()
+    .then((appointments) => res.json(appointments))
+    .catch((err) => res.status(400).json({ message: err.message }));
 };
 
-// Doctor confirms or declines appointment
-exports.updateAppointmentStatus = async (req, res) => {
+let createAppointment = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { status } = req.body;
+    const { patientId, doctorId, appointmentDate, appointmentTime } = req.body;
 
-    if (!["Confirmed", "Declined"].includes(status)) {
-      return res.status(400).json({ message: "Invalid status" });
+    const date = new Date(appointmentDate);
+    const time = new Date(appointmentTime);
+
+    const isAvailable = await isTimeSlotAvailable(doctorId, date, time);
+    if (!isAvailable) {
+      return res.status(400).json({ message: "Doctor is not available at the selected time." });
     }
 
-    const appointment = await Appointment.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
+    const conflict = await Appointment.findOne({
+      appointmentDate: date,
+      appointmentTime: time,
+      $or: [{ doctorId }, { patientId }]
+    });
 
-    if (!appointment) {
+    if (conflict) {
+      return res.status(400).json({ message: "Time slot already booked by doctor or patient." });
+    }
+
+    const newAppointment = new Appointment(req.body);
+    const appointment = await newAppointment.save();
+    res.status(201).json(appointment);
+
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const updateAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      patientId,
+      doctorId,
+      appointmentDate,
+      appointmentTime,
+    } = req.body;
+
+    if (!doctorId || !patientId || !appointmentDate || !appointmentTime) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const timeSlot = new Date(appointmentTime).toTimeString().slice(0, 5);
+
+    const isAvailable = await isTimeSlotAvailable(doctorId, appointmentDate, timeSlot);
+    if (!isAvailable) {
+      return res.status(400).json({ message: "Doctor is not available at this time slot" });
+    }
+
+    const conflict = await Appointment.findOne({
+      _id: { $ne: id },
+      appointmentDate: new Date(appointmentDate),
+      appointmentTime: new Date(appointmentTime),
+      $or: [{ doctorId }, { patientId }],
+    });
+
+    if (conflict) {
+      return res.status(400).json({ message: "Time slot is already booked for doctor or patient" });
+    }
+
+    const updatedAppointment = await Appointment.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!updatedAppointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
 
-    res.json(appointment);
+    res.json(updatedAppointment);
   } catch (err) {
-    console.error("Status update error:", err);
-    res.status(500).json({ message: "Failed to update status" });
+    res.status(500).json({ message: err.message });
   }
 };
 
-// Mark as paid
-exports.markAppointmentAsPaid = async (req, res) => {
-  try {
-    const appointment = await Appointment.findById(req.params.id);
-    if (!appointment) return res.status(404).json({ message: "Not found" });
+let deleteAppointment = (req, res) => {
+  Appointment.findByIdAndDelete(req.params.id)
+    .then((appointment) => {
+      if (!appointment) return res.status(404).json({ message: "Appointment not found" });
+      res.json({ message: "Appointment deleted" });
+    })
+    .catch((err) => res.status(400).json({ message: err.message }));
+};
 
-    appointment.paymentStatus = "Paid";
-    await appointment.save();
-    res.json(appointment);
-  } catch (err) {
-    console.error("Payment error:", err);
-    res.status(500).json({ message: "Failed to update payment" });
-  }
+module.exports = {
+  getAppointmentById,
+  getAppointmentByUserId,
+  getAllAppointments,
+  createAppointment,
+  updateAppointment,
+  deleteAppointment,
 };

@@ -2,6 +2,11 @@ let jwt = require('jsonwebtoken');
 let config = require('../config/config');
 
 let isAuthenticated = (req,res,next) => {
+
+	if(config.SKIP_AUTH_MIDDLEWARE_FOR_TEST == "true"){
+		next();
+		return
+	}
 	
 	let bearerHeader = req.headers["authorization"];
 
@@ -55,9 +60,17 @@ let isDoctor = (req, res, next) => {
 	}
 }
 
+let isRole = (...roles) => (req, res, next) => {
+  if (roles.includes(req.role)) {
+    return next();
+  }
+  return res.status(403).json({ message: 'Role Not Authorized' });
+};
+
 
 module.exports.isAuthenticated = isAuthenticated;
 module.exports.isUser = isUser;
 module.exports.isPatient = isPatient;
 module.exports.isAdmin = isAdmin;
 module.exports.isDoctor = isDoctor;
+module.exports.isRole = isRole;

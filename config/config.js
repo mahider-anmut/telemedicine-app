@@ -1,10 +1,12 @@
 module.exports = {
   APP_NAME: "Telemedicine",
   BASE_URL: "",
+  FRONTEND_URL: "http://localhost:3000",
   SERVER_PORT: process.env.PORT || 5000,
   HASH_ROUND: 5,
   JWT_SECRET: process.env.JWT_SECRET,
-  TOKEN_TIMEOUT: "7d",
+  TOKEN_TIMEOUT: "8h",
+  RESET_PASSWORD_TIMEOUT: 3600000, // 1 hour
   DATABASE: {
     URI: process.env.MONGO_URI
   },
@@ -21,4 +23,5 @@ module.exports = {
       pass: ""
     }
   },
+  SKIP_AUTH_MIDDLEWARE_FOR_TEST: process.env.SKIP_AUTH_MIDDLEWARE_FOR_TEST
 };

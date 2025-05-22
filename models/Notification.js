@@ -2,20 +2,22 @@ const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema(
   {
-    chatId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Chat",
+      ref: "User",
       required: true,
     },
-    messageType: {
+    type: {
       type: String,
-      enum: ["text", "image", "file"],
-      default: "text",
+      enum: ["system", "promotion", "account","transaction"],
+      default: "system",
     },
-    content: {
-      type: String,
-      required: true,
+    title: {
+      type: String
     },
+    message: {
+      type: String
+    }
   },
   {
     timestamps: true,

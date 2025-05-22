@@ -1,33 +1,35 @@
-// models/Payment.js
 const mongoose = require("mongoose");
 
-const paymentSchema = new mongoose.Schema(
+const invoiceSchema = new mongoose.Schema(
   {
     appointmentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Appointment",
       required: true,
     },
-    amount: {
+    price: {
       type: Number,
       required: true,
     },
     status: {
       type: String,
-      enum: ["Pending", "Paid", "Refunded"],
-      default: "Pending",
+      enum: ["Paid", "Unpaid", "Cancelled"],
+      default: "Unpaid",
     },
     transactionId: {
       type: String,
       required: true,
     },
-    paymentMethod: {
+    paymentType: {
       type: String,
-      enum: ["Chapa", "CreditCard", "DebitCard"], // Add other payment methods if needed
+      enum: ["chapa", "telebirr"],
       required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    versionKey: false,
+  }
 );
 
-module.exports = mongoose.model("Payment", paymentSchema);
+module.exports = mongoose.model("Invoice", invoiceSchema);
