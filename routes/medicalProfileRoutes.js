@@ -12,4 +12,4 @@ router.post('/', createMedicalProfile);
 router.put('/:id', updateMedicalProfile);
 router.delete('/:id', deleteMedicalProfile);
 
-export default router;
+module.exports = router;

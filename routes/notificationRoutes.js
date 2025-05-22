@@ -12,4 +12,4 @@ router.post('/', createNotification);
 router.put('/:id', updateNotification);
 router.delete('/:id', deleteNotification);
 
-export default router;
+module.exports = router;

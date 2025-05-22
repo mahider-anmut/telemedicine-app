@@ -16,6 +16,12 @@ let getScheduleByDoctorId = (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
+let getScheduleByPatientId = (req, res) => {
+  Schedule.find({ patientId : req.params.patientId })
+    .then((schedules) => res.json(schedules))
+    .catch((err) => res.status(400).json({ message: err.message }));
+};
+
 let getAllSchedules = (req, res) => {
   Schedule.find()
     .then((schedules) => res.json(schedules))
@@ -247,6 +253,7 @@ let getTimeSlotAvailableForAppointment = async (req, res) => {
 module.exports = {
   getScheduleById,
   getScheduleByDoctorId,
+  getScheduleByPatientId,
   getAllSchedules,
   createSchedule,
   updateSchedule,

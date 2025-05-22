@@ -12,4 +12,4 @@ router.post('/', createChat);
 router.put('/:id', updateChat);
 router.delete('/:id', deleteChat);
 
-export default router;
+module.exports = router;

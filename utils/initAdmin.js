@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const User = require("./models/User");
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
 const config = require("../config/config");
 
 async function initializeAdminUser() {
@@ -30,3 +30,5 @@ async function initializeAdminUser() {
     process.exit(1);
   }
 }
+
+module.exports = initializeAdminUser;

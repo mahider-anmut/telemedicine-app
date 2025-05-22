@@ -12,4 +12,4 @@ router.post('/', createInvoice);
 router.put('/:id', updateInvoice);
 router.delete('/:id', deleteInvoice);
 
-export default router;
+module.exports = router;

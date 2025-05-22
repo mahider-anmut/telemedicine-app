@@ -12,4 +12,4 @@ router.post('/', createHealthRecord);
 router.put('/:id', updateHealthRecord);
 router.delete('/:id', deleteHealthRecord);
 
-export default router;
+module.exports = router;
