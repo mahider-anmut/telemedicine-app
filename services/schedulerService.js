@@ -2,15 +2,17 @@
 const schedule = require('node-schedule');
 
 
-const hourlyScheduler = () => {
+const hourlyScheduler = (title,taskFunction) => {
     var rule = new schedule.RecurrenceRule();
     
     rule.minute = 0;
     
-    var w = schedule.scheduleJob(rule, function () {
-        //TODO: call expire appointments
+    const job = schedule.scheduleJob(rule, function () {
+        console.log("Running scheduled task: '"+title+"' at "+new Date());
+        taskFunction();
     });
-    return w;
+
+    return job;
 }
 
 
