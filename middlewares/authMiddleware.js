@@ -2,18 +2,12 @@ let jwt = require('jsonwebtoken');
 let config = require('../config/config');
 
 let isAuthenticated = (req,res,next) => {
-
-	if(config.SKIP_AUTH_MIDDLEWARE_FOR_TEST == "true"){
-		next();
-		return
-	}
-	
 	let bearerHeader = req.headers["authorization"];
 
 	if(typeof bearerHeader !== 'undefined'){
 		let bearer = bearerHeader.split(" ");
 		let bearerToken = bearer[1];
-		jwt.verify(bearerToken,config.JWT_KEY,function(err,pass){
+		jwt.verify(bearerToken,config.JWT_SECRET,function(err,pass){
 			if(err){
 				res.status(401).send("Authentication Failed");
 			}else{

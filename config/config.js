@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 module.exports = {
   APP_NAME: "Telemedicine",
   BASE_URL: "",
@@ -22,6 +25,5 @@ module.exports = {
       user: "",
       pass: ""
     }
-  },
-  SKIP_AUTH_MIDDLEWARE_FOR_TEST: process.env.SKIP_AUTH_MIDDLEWARE_FOR_TEST
+  }
 };

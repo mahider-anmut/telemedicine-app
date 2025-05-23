@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "approved", "rejected", "blocked"],
+      enum: ["pending", "active", "rejected", "blocked"],
       default: "pending",
     },
     resetPasswordToken: { 
@@ -82,5 +82,35 @@ userSchema.pre("save", function(next) {
     }
   });
 });
+
+userSchema.statics.authenticate = async function(username, password) {
+  try {
+    const user = await this.findOne({ email: username }).select('+password');
+
+    if (!user) {
+      const error = new Error("User not found.");
+      error.status = 401;
+      throw error;
+    }
+
+    if (user.status !== "active") {
+      const error = new Error("User is not active.");
+      error.status = 401;
+      throw error;
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      const error = new Error("Incorrect password.");
+      error.status = 401;
+      throw error;
+    }
+
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
 
 module.exports = mongoose.model("User", userSchema);
