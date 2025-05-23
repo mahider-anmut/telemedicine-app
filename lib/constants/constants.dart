@@ -10,6 +10,7 @@ class Constants {
   static const String email = "email";
   static const String approved = "approved";
   static const String role = "role";
+  static const String status = "status";
 
   static const String requestingApproval = "requestingApproval";
 
