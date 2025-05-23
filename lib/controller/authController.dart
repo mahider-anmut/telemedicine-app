@@ -59,8 +59,8 @@ class AuthController {
       Utils.showToast("Passwords Does not Match !",type: "error");
     }else {
       Map<String, dynamic> data = {
-        "firstName": email.trim(),
-        "lastName": email.trim(),
+        "firstName": firstName.trim(),
+        "lastName": lastName.trim(),
         "email": email.trim(),
         "password": password
       };
@@ -89,6 +89,8 @@ class AuthController {
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
+      }else{
+        Utils.showToast("User already exists! Please login first.",type: "error");
       }
     }
   }

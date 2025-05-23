@@ -20,7 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _obscure = true;
   bool _obscureConfirm = true;
   TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastnameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
     passwordController.dispose();
     confirmPasswordController.dispose();
     firstNameController.dispose();
-    lastnameController.dispose();
+    lastNameController.dispose();
     super.dispose();
   }
 
@@ -51,13 +51,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 40.0),
+                      const SizedBox(height: 25.0),
                       Text(
                         localizations.translate("helloLetsGetStarted"),
                         style: AppTextStyles.bigTitleStyle(context),
                       ),
-                      const SizedBox(height: 30.0),
-                      const SizedBox(height: 15.0),
+                      const SizedBox(height: 20.0),
                       SizedBox(
                         height: 56,
                         child: TextField(
@@ -77,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       SizedBox(
                         height: 56,
                         child: TextField(
-                          controller: lastnameController,
+                          controller: lastNameController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Color(0xFFF7F8F9),
@@ -161,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         onPressed: () async {
                           await AuthController.onRegisterPressed(
                             firstNameController.text,
-                            lastnameController.text,
+                            lastNameController.text,
                             emailController.text,
                             passwordController.text,
                             confirmPasswordController.text,
