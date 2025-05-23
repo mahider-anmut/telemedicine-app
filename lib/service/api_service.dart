@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart' as http;
@@ -12,11 +13,15 @@ class Api {
 
   static Map<String, dynamic> _processResponse(http.Response response) {
     try {
-      final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      jsonResponse["statusCode"] = response.statusCode;
-      return jsonResponse;
+      final body = response.body.trim();
+      final decodedData = body.isNotEmpty ? json.decode(body) : null;
+
+      return {
+        "statusCode": response.statusCode,
+        ...decodedData,
+      };
     } catch (e) {
-      throw Exception('Failed to decode response: ${response.body}');
+      throw Exception('Failed to decode response: ${e.toString()}');
     }
   }
 
@@ -68,9 +73,6 @@ class Api {
 
       if (response.statusCode == 200) {
         return _processResponse(response);
-      } else if (response.statusCode == 401 && !refreshed) {
-        // await _processTokenRefresh();
-        return await get(endpoint, filters: filters, body: body, isAuth: true, refreshed: true);
       } else {
         // Handle other status codes
         return _processResponse(response);
@@ -107,11 +109,7 @@ class Api {
 
       if (response.statusCode == 200) {
         return _processResponse(response);
-      } else if (response.statusCode == 401 && !refreshed) {
-        // await _processTokenRefresh();
-        return await post(endpoint,body,isAuth:true,refreshed:true);
       } else {
-        // Handle other status codes
         return _processResponse(response);
       }
     } catch (e) {

@@ -19,6 +19,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool _obscure = true;
   bool _obscureConfirm = true;
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -28,6 +30,8 @@ class _RegisterPageState extends State<RegisterPage> {
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    firstNameController.dispose();
+    lastnameController.dispose();
     super.dispose();
   }
 
@@ -53,6 +57,38 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: AppTextStyles.bigTitleStyle(context),
                       ),
                       const SizedBox(height: 30.0),
+                      const SizedBox(height: 15.0),
+                      SizedBox(
+                        height: 56,
+                        child: TextField(
+                          controller: firstNameController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xFFF7F8F9),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFFE8ECF4)),
+                            ),
+                            labelText: localizations.translate("firstName"),
+                            labelStyle: AppTextStyles.bodySmallStyle(context),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15.0),
+                      SizedBox(
+                        height: 56,
+                        child: TextField(
+                          controller: lastnameController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xFFF7F8F9),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFFE8ECF4)),
+                            ),
+                            labelText: localizations.translate("lastName"),
+                            labelStyle: AppTextStyles.bodySmallStyle(context),
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 15.0),
                       SizedBox(
                         height: 56,
@@ -124,6 +160,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         label: localizations.translate("register"),
                         onPressed: () async {
                           await AuthController.onRegisterPressed(
+                            firstNameController.text,
+                            lastnameController.text,
                             emailController.text,
                             passwordController.text,
                             confirmPasswordController.text,
