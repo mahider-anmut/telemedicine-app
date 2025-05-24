@@ -60,7 +60,7 @@ class _SideMenuState extends State<SideMenu> {
           UserAccountsDrawerHeader(
             accountName: Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: Text("$firstName $lastName",style:AppTextStyles.sideMenuNameStyle(context)),
+              child: Text("${Utils.capitalize(firstName)} ${Utils.capitalize(lastName)}",style:AppTextStyles.sideMenuNameStyle(context)),
             ),
             decoration: BoxDecoration(
               // color: AppTheme.getThemeExtension(context).primaryColor!,
@@ -72,7 +72,7 @@ class _SideMenuState extends State<SideMenu> {
             ),
             accountEmail: Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: Text(role,style:AppTextStyles.sideMenuBodySmallStyle(context)),
+              child: Text(Utils.capitalize(role),style:AppTextStyles.sideMenuBodySmallStyle(context)),
             ),
             currentAccountPicture: const Padding(
               padding: EdgeInsets.only(left: 20.0),
