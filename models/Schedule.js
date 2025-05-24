@@ -6,6 +6,7 @@ const scheduleSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      unique: true,
     },
     weeklySchedule: {
       monday: { type: [String], default: [] },
@@ -19,7 +20,7 @@ const scheduleSchema = new mongoose.Schema(
     exceptions: {
       type:  [
         {
-          date: { type: Date, required: true },
+          date: { type: Date},
           timeSlots: [String],
         },
       ],

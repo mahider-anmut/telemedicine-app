@@ -9,7 +9,7 @@ module.exports = {
   HASH_ROUND: 5,
   JWT_SECRET: process.env.JWT_SECRET,
   TOKEN_TIMEOUT: "8h",
-  RESET_PASSWORD_TIMEOUT: 3600000, // 1 hour
+  RESET_PASSWORD_TOKEN_TIMEOUT: 3600000, // 1 hour
   DATABASE: {
     URI: process.env.MONGO_URI
   },

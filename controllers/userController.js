@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Schedule = require("../models/Schedule");
+
 const Utils = require("../utils/utils");
 const Email = require("../services/mailService");
 
@@ -94,6 +96,99 @@ let deleteUser = (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
+let getAllAvailableDoctors = async (req, res) => {
+  try {
+    const schedules = await Schedule.find();
+
+    const availableSchedules = schedules.filter(schedule => {
+      const days = Object.keys(schedule.weeklySchedule || {});
+      for (let day of days) {
+        const slots = schedule.weeklySchedule[day];
+        if (slots && slots.length > 0) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    const doctorIds = availableSchedules.map(s => s.doctorId);
+
+    const doctors = await User.find({ _id: { $in: doctorIds }, role: 'doctor' });
+
+    res.json(doctors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+let getAllAvailableDoctorsByDate = async (req, res) => {
+  try {
+    const { date } = req.query;
+    if (!date) return res.status(400).json({ message: "Date query parameter is required" });
+
+    const requestedDate = moment(date);
+    if (!requestedDate.isValid()) return res.status(400).json({ message: "Invalid date format" });
+
+    const dayOfWeek = requestedDate.format('dddd').toLowerCase(); // e.g. 'monday'
+
+    const schedules = await Schedule.find().populate('doctorId');
+
+    const availableSchedules = schedules.filter(schedule => {
+      const weeklySlots = schedule.weeklySchedule?.[dayOfWeek] || [];
+
+      if (!weeklySlots.length) return false;
+
+      const exception = schedule.exceptions.find(ex =>
+        moment(ex.date).isSame(requestedDate, 'day')
+      );
+
+      const finalSlots = exception ? exception.timeSlots : weeklySlots;
+
+      return finalSlots.length > 0;
+    });
+
+    const result = availableSchedules.map(schedule => ({
+      doctor: schedule.doctorId,
+      availableTimeSlots: (() => {
+        const exception = schedule.exceptions.find(ex =>
+          moment(ex.date).isSame(requestedDate, 'day')
+        );
+        return exception ? exception.timeSlots : schedule.weeklySchedule[dayOfWeek];
+      })(),
+    }));
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+let getTopAvailableDoctors = async (req, res) => {
+  try {
+    const schedules = await Schedule.find();
+
+    const availableSchedules = schedules.filter(schedule => {
+      const days = Object.keys(schedule.weeklySchedule || {});
+      for (let day of days) {
+        const slots = schedule.weeklySchedule[day];
+        if (slots && slots.length > 0) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    const doctorIds = availableSchedules.map(s => s.doctorId);
+
+    const doctors = await User.find({ _id: { $in: doctorIds }, role: 'doctor' });
+
+    res.json(doctors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getUserById,
   getUsersByRole,
@@ -101,4 +196,7 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getAllAvailableDoctors,
+  getAllAvailableDoctorsByDate,
+  getTopAvailableDoctors
 };

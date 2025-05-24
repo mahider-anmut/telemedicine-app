@@ -11,14 +11,8 @@ let getScheduleById = (req, res) => {
 };
 
 let getScheduleByDoctorId = (req, res) => {
-  Schedule.find({ doctorId: req.params.doctorId })
-    .then((schedules) => res.json(schedules))
-    .catch((err) => res.status(400).json({ message: err.message }));
-};
-
-let getScheduleByPatientId = (req, res) => {
-  Schedule.find({ patientId : req.params.patientId })
-    .then((schedules) => res.json(schedules))
+  Schedule.findOne({ doctorId: req.params.doctorId })
+    .then((schedule) => res.json(schedule))
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
@@ -61,6 +55,22 @@ let updateWeeklySchedule = (req, res) => {
   Schedule.findByIdAndUpdate(
     req.params.id,
     { weeklySchedule },
+    { new: true }
+  )
+    .then(schedule => {
+      if (!schedule) return res.status(404).json({ message: "Schedule not found" });
+      res.json(schedule);
+    })
+    .catch(err => res.status(400).json({ message: err.message }));
+};
+
+let updateExceptionSchedule = (req, res) => {
+  const { exceptions } = req.body;
+  if (!exceptions) return res.status(400).json({ message: "exceptions is required" });
+
+  Schedule.findByIdAndUpdate(
+    req.params.id,
+    { exceptions },
     { new: true }
   )
     .then(schedule => {
@@ -148,75 +158,6 @@ let deleteAllWeeklySchedule = (req, res) => {
     .catch(err => res.status(400).json({ message: err.message }));
 };
 
-let getAllAvailableDoctors = async (req, res) => {
-  try {
-    const schedules = await Schedule.find();
-
-    const availableSchedules = schedules.filter(schedule => {
-      const days = Object.keys(schedule.weeklySchedule || {});
-      for (let day of days) {
-        const slots = schedule.weeklySchedule[day];
-        if (slots && slots.length > 0) {
-          return true;
-        }
-      }
-      return false;
-    });
-
-    const doctorIds = availableSchedules.map(s => s.doctorId);
-
-    const doctors = await User.find({ _id: { $in: doctorIds }, role: 'doctor' });
-
-    res.json(doctors);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-let getAllAvailableDoctorsByDate = async (req, res) => {
-  try {
-    const { date } = req.query;
-    if (!date) return res.status(400).json({ message: "Date query parameter is required" });
-
-    const requestedDate = moment(date);
-    if (!requestedDate.isValid()) return res.status(400).json({ message: "Invalid date format" });
-
-    const dayOfWeek = requestedDate.format('dddd').toLowerCase(); // e.g. 'monday'
-
-    const schedules = await Schedule.find().populate('doctorId');
-
-    const availableSchedules = schedules.filter(schedule => {
-      const weeklySlots = schedule.weeklySchedule?.[dayOfWeek] || [];
-
-      if (!weeklySlots.length) return false;
-
-      const exception = schedule.exceptions.find(ex =>
-        moment(ex.date).isSame(requestedDate, 'day')
-      );
-
-      const finalSlots = exception ? exception.timeSlots : weeklySlots;
-
-      return finalSlots.length > 0;
-    });
-
-    const result = availableSchedules.map(schedule => ({
-      doctor: schedule.doctorId,
-      availableTimeSlots: (() => {
-        const exception = schedule.exceptions.find(ex =>
-          moment(ex.date).isSame(requestedDate, 'day')
-        );
-        return exception ? exception.timeSlots : schedule.weeklySchedule[dayOfWeek];
-      })(),
-    }));
-
-    res.json(result);
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-
 let getTimeSlotAvailableForAppointment = async (req, res) => {
   try {
     const { doctorId, date } = req.body;
@@ -253,17 +194,15 @@ let getTimeSlotAvailableForAppointment = async (req, res) => {
 module.exports = {
   getScheduleById,
   getScheduleByDoctorId,
-  getScheduleByPatientId,
   getAllSchedules,
   createSchedule,
   updateSchedule,
   deleteSchedule,
   deleteAllWeeklySchedule,
-  getAllAvailableDoctors,
-  getAllAvailableDoctorsByDate,
   getTimeSlotAvailableForAppointment,
   deleteExceptionByDate,
   deleteAllExceptions,
   updateExceptionByDate,
-  updateWeeklySchedule
+  updateWeeklySchedule,
+  updateExceptionSchedule
 };
