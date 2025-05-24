@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Schedule = require("../models/Schedule");
+const Statistics = require("../models/Statistics");
 
 const Utils = require("../utils/utils");
 const Email = require("../services/mailService");
@@ -181,9 +182,31 @@ let getTopAvailableDoctors = async (req, res) => {
 
     const doctorIds = availableSchedules.map(s => s.doctorId);
 
-    const doctors = await User.find({ _id: { $in: doctorIds }, role: 'doctor' });
+    const topStatistics = await Statistics.find({
+      doctorId: { $in: doctorIds }
+    })
+      .sort({ avgRating: -1, totalReviews: -1 }) 
+      .limit(10)
+      .lean();
 
-    res.json(doctors);
+    const topDoctorIds = topStatistics.map(stat => stat.doctorId);
+
+    const doctors = await User.find({ _id: { $in: topDoctorIds }, role: 'doctor' });
+
+    const doctorMap = doctors.reduce((acc, doc) => {
+      acc[doc._id.toString()] = doc.toObject();
+      return acc;
+    }, {});
+
+    const topDoctors = topStatistics.map(stat => {
+      const doc = doctorMap[stat.doctorId.toString()];
+      return {
+        ...doc,
+        _statistics: stat
+      };
+    });
+
+    res.json(topDoctors);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

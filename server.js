@@ -25,6 +25,7 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const scheduleRoutes = require("./routes/scheduleRoutes");
 const userRoutes = require("./routes/userRoutes.js");
 const healthRecordRoutes = require("./routes/healthRecordRoutes");
+const statsRoutes = require("./routes/statisticsRoutes.js");
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use("/api/notification", auth.isAuthenticated, notificationRoutes);
 app.use("/api/schedule", auth.isAuthenticated, scheduleRoutes);
 app.use("/api/user", auth.isAuthenticated, userRoutes);
 app.use("/api/healthRecord", auth.isAuthenticated, healthRecordRoutes);
+app.use("/api/stats", auth.isAuthenticated, statsRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
