@@ -117,6 +117,40 @@ class Api {
     }
   }
 
+  static Future<Map<String, dynamic>> put(String endpoint, Map<String, dynamic> body,  {bool isAuth = true,refreshed = false}) async {
+    final Uri uri = Uri.parse(endpoint);
+    final String jsonBody = json.encode(body);
+
+    final Map<String, String> headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+
+    // Check for internet connection
+    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult ==ConnectivityResult.none) {
+      Utils.showToast("No Internet Connection,Please try again.", type: "alert");
+      //throw Exception('No internet connection');
+    }
+
+    // Add Authorization header if needed
+    if (isAuth) {
+      headers['Authorization'] = "Bearer ${await SharedPreference.getString(Constants.authToken)}";
+    }
+
+    try {
+      final http.Response response = await http.put(uri, headers: headers, body: jsonBody);
+
+      if (response.statusCode == 200) {
+        return _processResponse(response);
+      } else {
+        return _processResponse(response);
+      }
+    } catch (e) {
+      throw Exception('Unable to Connect to Server $e');
+    }
+  }
+
+
   static Future<Map<String, dynamic>> uploadFile(String filePath) async {
     final Uri uri = Uri.parse(ApiEndpoints.uploadEndpoint);
     final request = http.MultipartRequest('POST', uri);
@@ -150,30 +184,7 @@ class Api {
   }
 
 
-  // static Future<ExampleModel?> put({required Map<String, dynamic> body, required String endpoint, bool isAuth = true}) async {
-  //   final Uri uri = Uri.parse(BASE_URL + endpoint);
-  //   final String jsonString = json.encode(body);
-  //
-  //   final Map<String, String> headers = <String, String>{
-  //     'Content-Type': 'application/json'
-  //   };
-  //   if (isAuth) {
-  //     headers['Authorization'] = await SharedPreference.getString("auth");
-  //   }
-  //
-  //   final http.Response response = await http.put(uri, headers: headers, body: jsonString);
-  //
-  //   try {
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-  //       return ExampleModel.fromJson(jsonResponse);
-  //     } else {
-  //       throw Exception('Unable to update $endpoint from API with code ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Unable to Connect to Server $e');
-  //   }
-  // }
+
   //
   // static Future<void> delete(String endpoint, {bool isAuth = true}) async {
   //   final Uri uri = Uri.parse(BASE_URL + endpoint);

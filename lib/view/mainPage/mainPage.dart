@@ -10,6 +10,7 @@ import '../../widgets/headerCardWidget.dart';
 import '../../widgets/infoCardWidget.dart';
 import '../appointments/appointmentHomePage.dart';
 import '../checkup/checkupHomePage.dart';
+import '../doctorSchedule/doctorSchedulePage.dart';
 import '../doctors/doctorsHomePage.dart';
 import '../pharmacy/pharmacyHomePage.dart';
 import '../report/reportHomePage.dart';
@@ -159,6 +160,20 @@ class MainPage extends StatelessWidget {
                     icon: LocalAssets.reportIcon,
                     title: "Reports",
                     description: "Get your reports easily.",
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DoctorSchedulePage()),
+                    );
+                  },
+                  child: InfoCardWidget(
+                    isDarkMode: false,
+                    icon: LocalAssets.reportIcon,
+                    title: "Schedule Manager",
+                    description: "Setup your availability easily.",
                   ),
                 ),
               ],
