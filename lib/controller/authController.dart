@@ -30,6 +30,7 @@ class AuthController {
             SharedPreference.setBool(Constants.isLoggedIn, true);
             SharedPreference.setString(Constants.authToken, res["token"]);
 
+            SharedPreference.setString(Constants.userId, user.id!);
             SharedPreference.setString(Constants.firstName, user.firstName!);
             SharedPreference.setString(Constants.lastName,  user.lastName!);
             SharedPreference.setString(Constants.email, email.trim());
@@ -74,6 +75,7 @@ class AuthController {
         SharedPreference.setBool(Constants.isLoggedIn, true);
         SharedPreference.setString(Constants.authToken, res["token"]);
 
+        SharedPreference.setString(Constants.userId, user.id!);
         SharedPreference.setString(Constants.firstName, user.firstName!);
         SharedPreference.setString(Constants.lastName, user.lastName!);
         SharedPreference.setString(Constants.email, email.trim());
