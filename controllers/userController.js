@@ -4,6 +4,7 @@ const Statistics = require("../models/Statistics");
 
 const Utils = require("../utils/utils");
 const Email = require("../services/mailService");
+const MedicalProfile = require("../models/MedicalProfile");
 
 let getUserById = (req, res) => {
   User.findById(req.params.id)
@@ -192,17 +193,28 @@ let getTopAvailableDoctors = async (req, res) => {
     const topDoctorIds = topStatistics.map(stat => stat.doctorId);
 
     const doctors = await User.find({ _id: { $in: topDoctorIds }, role: 'doctor' });
+    const medicalProfiles = await MedicalProfile.find({ doctorId: { $in: topDoctorIds } }).lean();
+
 
     const doctorMap = doctors.reduce((acc, doc) => {
       acc[doc._id.toString()] = doc.toObject();
       return acc;
     }, {});
 
+    const medicalProfileMap = medicalProfiles.reduce((acc, profile) => {
+      acc[profile.doctorId.toString()] = profile;
+      return acc;
+    }, {});
+
+
     const topDoctors = topStatistics.map(stat => {
       const doc = doctorMap[stat.doctorId.toString()];
+      const profile = medicalProfileMap[stat.doctorId.toString()];
+      
       return {
         ...doc,
-        _statistics: stat
+        _statistics: stat,
+        _medicalProfile: profile || null
       };
     });
 
