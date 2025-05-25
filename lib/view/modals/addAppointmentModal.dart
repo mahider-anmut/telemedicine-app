@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine/controller/appointmentController.dart';
@@ -31,7 +33,7 @@ class _AddAppointmentModalState extends State<AddAppointmentModal> {
   List<String> _availableSlots = [];
   String? _selectedSlot;
   int? _sessionDuration;
-  int? _sessionPrice;
+  double? _sessionPrice;
   final TextEditingController _titleController = TextEditingController();
 
   Future<void> _pickDate() async {
@@ -70,9 +72,10 @@ class _AddAppointmentModalState extends State<AddAppointmentModal> {
         title: _titleController.text,
         appointmentDate: DateFormat('yyyy-MM-dd').format(_selectedDate!),
         appointmentTime: _selectedSlot!,
-        sessionPrice: "${_sessionPrice}",
-        sessionDuration: "${_sessionDuration}",
-        sessionTime: "${_selectedSlot?.split(" - ")[0]}"
+        sessionPrice: _sessionPrice!,
+        sessionDuration: _sessionDuration!,
+        sessionTime: "${_selectedSlot?.split(" - ")[0]}",
+        appointmentStatus: "pending"
       );
 
       await AppointmentController.createAppointment(context,appointment);

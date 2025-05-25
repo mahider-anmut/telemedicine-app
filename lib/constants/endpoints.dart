@@ -17,6 +17,10 @@ class ApiEndpoints {
   static String getAvailableSlotsEndpoint(String doctorId,String date) { return "$baseUrl/schedule/get-available-slot/$doctorId/$date";}
 
   static String createAppointmentEndpoint = '$baseUrl/appointment';
+  static String getDoctorAppointmentEndpoint(String doctorId) { return "$baseUrl/appointment/doctor/$doctorId";}
+  static String getPatientAppointmentEndpoint(String patientId) { return "$baseUrl/appointment/patient/$patientId";}
+  static String updateAppointmentStatusEndpoint(String id) { return "$baseUrl/appointment/update-status/$id";}
+
 
 
   static String getAvailableDoctors = '$baseUrl/user/all-available-doctors';

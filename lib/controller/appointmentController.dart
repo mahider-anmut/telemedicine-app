@@ -26,4 +26,37 @@ class AppointmentController {
     }
   }
 
+  static getAllAppointment() async {
+    var userRole = await SharedPreference.getString(Constants.role);
+    var userId = await SharedPreference.getString(Constants.userId);
+
+    var res;
+    if(userRole==Constants.patientRole){
+      res = await Api.getAll(ApiEndpoints.getDoctorAppointmentEndpoint(userId));
+    }else{
+      res = await Api.getAll(ApiEndpoints.getPatientAppointmentEndpoint(userId));
+    }
+
+    List<Appointment> appointments = (res["data"] as List)
+        .map((json) => Appointment.fromJson(json))
+        .toList();
+
+    return appointments;
+  }
+
+  static updateStatus(BuildContext context,String id,String status) async {
+
+
+    Map<String, dynamic> data = {
+      "appointmentStatus": status,
+    };
+
+    var res = await Api.put(ApiEndpoints.updateAppointmentStatusEndpoint(id),data);
+
+    if (res["statusCode"] == 200 || res["statusCode"] == 201) {
+      Utils.showToast("Updated Successfully.");
+    }else{
+      Utils.showToast("Unable to update appointment.",type: "error");
+    }
+  }
 }

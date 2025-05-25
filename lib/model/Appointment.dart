@@ -1,16 +1,20 @@
+import 'User.dart';
+
 class Appointment {
   final String? id;
   final String? patientId;
   final String? doctorId;
   final String? title;
-  final String? sessionPrice;
-  final String? sessionDuration;
+  final double? sessionPrice;
+  final int? sessionDuration;
   final String? sessionTime;
   final String? appointmentDate;
   final String? appointmentTime;
   final String? appointmentStatus;
+  final User? patient;
+  final User? doctor;
 
-  Appointment({this.id, this.patientId, this.doctorId, this.title, this.sessionPrice, this.sessionDuration, this.sessionTime, this.appointmentDate, this.appointmentStatus, this.appointmentTime});
+  Appointment({this.id, this.patientId, this.doctorId, this.title, this.sessionPrice, this.sessionDuration, this.sessionTime, this.appointmentDate, this.appointmentStatus, this.appointmentTime, this.doctor,this.patient});
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
@@ -23,7 +27,9 @@ class Appointment {
       sessionTime: json['sessionTime'],
       appointmentDate: json['appointmentDate'],
       appointmentTime: json['appointmentTime'],
-      appointmentStatus: json['appointmentStatus']
+      appointmentStatus: json['appointmentStatus'],
+      patient: json['_patient'] != null? User.fromJson(json['_patient']): null,
+      doctor: json['_doctor'] != null? User.fromJson(json['_doctor']): null
     );
   }
 
@@ -39,6 +45,8 @@ class Appointment {
       'appointmentDate': appointmentDate,
       'appointmentTime': appointmentTime,
       'appointmentStatus': appointmentStatus,
+      'patient': patient,
+      'doctor': doctor
     };
   }
 }
