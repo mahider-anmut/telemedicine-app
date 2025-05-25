@@ -5,7 +5,7 @@ const { getMedicalProfileById,getMedicalProfileByUserId,getAllMedicalProfiles,cr
 
 const router = express.Router();
 
-router.get('/user/:userId', getMedicalProfileByUserId);
+router.get('/user/:doctorId', getMedicalProfileByUserId);
 router.get('/:id', getMedicalProfileById);
 router.get('/', getAllMedicalProfiles);
 router.post('/', createMedicalProfile);
