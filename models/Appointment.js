@@ -24,12 +24,15 @@ const appointmentSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    sessionTime:{
+      type: String
+    },
     appointmentDate:{
       type: Date,
       required: true
     },
     appointmentTime:{
-      type: Date,
+      type: String,
       required: true
     },
     appointmentStatus: {

@@ -116,8 +116,37 @@ let getAllAvailableDoctors = async (req, res) => {
     const doctorIds = availableSchedules.map(s => s.doctorId);
 
     const doctors = await User.find({ _id: { $in: doctorIds }, role: 'doctor' });
+    const statistics = await Statistics.find({ doctorId: { $in: doctorIds } }).lean();
+    const medicalProfiles = await MedicalProfile.find({ doctorId: { $in: doctorIds } }).lean();
 
-    res.json(doctors);
+    const statisticsMap = statistics.reduce((acc, stat) => {
+      acc[stat.doctorId.toString()] = stat;
+      return acc;
+    }, {});
+
+    const medicalProfileMap = medicalProfiles.reduce((acc, profile) => {
+      acc[profile.doctorId.toString()] = profile;
+      return acc;
+    }, {});
+
+    const doctorMap = doctors.reduce((acc, doc) => {
+      acc[doc._id.toString()] = doc.toObject();
+      return acc;
+    }, {});
+
+    const allDoctors = doctorIds.map(id => {
+      const doc = doctorMap[id.toString()];
+      const stat = statisticsMap[id.toString()];
+      const profile = medicalProfileMap[id.toString()];
+
+      return {
+        ...doc,
+        _statistics: stat || null,
+        _medicalProfile: profile || null
+      };
+    });
+
+    res.json(allDoctors);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -210,7 +239,7 @@ let getTopAvailableDoctors = async (req, res) => {
     const topDoctors = topStatistics.map(stat => {
       const doc = doctorMap[stat.doctorId.toString()];
       const profile = medicalProfileMap[stat.doctorId.toString()];
-      
+
       return {
         ...doc,
         _statistics: stat,

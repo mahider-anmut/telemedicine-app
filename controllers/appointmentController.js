@@ -10,8 +10,14 @@ let getAppointmentById = (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
-let getAppointmentByUserId = (req, res) => {
-  Appointment.find({ userId: req.params.userId })
+let getAppointmentByDoctorId = (req, res) => {
+  Appointment.find({ doctorId: req.params.doctorId })
+    .then((appointments) => res.json(appointments))
+    .catch((err) => res.status(400).json({ message: err.message }));
+};
+
+let getAppointmentByPatientId = (req, res) => {
+  Appointment.find({ patientId: req.params.patientId })
     .then((appointments) => res.json(appointments))
     .catch((err) => res.status(400).json({ message: err.message }));
 };
@@ -29,10 +35,10 @@ let createAppointment = async (req, res) => {
     const date = new Date(appointmentDate);
     const time = new Date(appointmentTime);
 
-    const isAvailable = await isTimeSlotAvailable(doctorId, date, time);
-    if (!isAvailable) {
-      return res.status(400).json({ message: "Doctor is not available at the selected time." });
-    }
+    // const isAvailable = await isTimeSlotAvailable(doctorId, date, time);
+    // if (!isAvailable) {
+    //   return res.status(400).json({ message: "Doctor is not available at the selected time." });
+    // }
 
     const conflict = await Appointment.findOne({
       appointmentDate: date,
@@ -97,6 +103,23 @@ const updateAppointment = async (req, res) => {
   }
 };
 
+const updateAppointmentStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {appointmentStatus} = req.body;
+
+    const updatedAppointment = await Appointment.findByIdAndUpdate(id, {appointmentStatus}, { new: true });
+
+    if (!updatedAppointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    res.json(updatedAppointment);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 let deleteAppointment = (req, res) => {
   Appointment.findByIdAndDelete(req.params.id)
     .then((appointment) => {
@@ -108,7 +131,9 @@ let deleteAppointment = (req, res) => {
 
 module.exports = {
   getAppointmentById,
-  getAppointmentByUserId,
+  getAppointmentByDoctorId,
+  getAppointmentByPatientId,
+  updateAppointmentStatus,
   getAllAppointments,
   createAppointment,
   updateAppointment,

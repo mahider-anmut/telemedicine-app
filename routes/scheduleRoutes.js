@@ -12,8 +12,7 @@ const { getScheduleById,getScheduleByDoctorId,getAllSchedules,createSchedule,upd
 const router = express.Router();
 
 
-router.get('/get-time-slot-available-for-appointment', getTimeSlotAvailableForAppointment);
-
+router.get('/get-available-slot/:doctorId/:date', getTimeSlotAvailableForAppointment);
 router.delete('/delete-all-weekly-schedule/:id', deleteAllWeeklySchedule);
 router.delete('/delete-exception-by-date/:id', deleteExceptionByDate);
 router.delete('/delete-all-exceptions/:id', deleteAllExceptions);

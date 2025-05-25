@@ -160,7 +160,7 @@ let deleteAllWeeklySchedule = (req, res) => {
 
 let getTimeSlotAvailableForAppointment = async (req, res) => {
   try {
-    const { doctorId, date } = req.body;
+    const { doctorId, date } = req.params;
     if (!doctorId || !date) {
       return res.status(400).json({ message: "doctorId, date, and timeSlot are required" });
     }
@@ -181,10 +181,12 @@ let getTimeSlotAvailableForAppointment = async (req, res) => {
       moment(ex.date).isSame(requestedDate, "day")
     );
 
-    const availableSlots = exception ? exception.timeSlots : (schedule.weeklySchedule?.[dayOfWeek] || []);
+    var weeklySlots = schedule.weeklySchedule?.[dayOfWeek] || [];
+    var exceptionSlots = exception ? exception.timeSlots :[];
+    const availableSlots = [...weeklySlots, ...exceptionSlots];
 
 
-    res.json({ availableSlots });
+    res.json({ availableSlots,sessionDuration:schedule.sessionDuration,sessionPrice:schedule.sessionPrice });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
