@@ -43,8 +43,24 @@ const appointmentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    versionKey: false,
+    versionKey: false
   }
 );
+
+appointmentSchema.virtual('_doctor', {
+    ref: 'User', 
+    localField: 'doctorId',
+    foreignField: '_id',
+    justOne: true 
+});
+
+appointmentSchema.virtual('_patient', {
+    ref: 'User', 
+    localField: 'patientId',
+    foreignField: '_id',
+    justOne: true 
+});
+
+appointmentSchema.set('toJSON', { virtuals: true });
 
 module.exports = mongoose.model("Appointment", appointmentSchema);

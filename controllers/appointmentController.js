@@ -11,13 +11,13 @@ let getAppointmentById = (req, res) => {
 };
 
 let getAppointmentByDoctorId = (req, res) => {
-  Appointment.find({ doctorId: req.params.doctorId })
+  Appointment.find({ doctorId: req.params.doctorId }).populate('_patient').populate('_doctor')
     .then((appointments) => res.json(appointments))
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
 let getAppointmentByPatientId = (req, res) => {
-  Appointment.find({ patientId: req.params.patientId })
+  Appointment.find({ patientId: req.params.patientId }).populate('_doctor').populate('_patient')
     .then((appointments) => res.json(appointments))
     .catch((err) => res.status(400).json({ message: err.message }));
 };
