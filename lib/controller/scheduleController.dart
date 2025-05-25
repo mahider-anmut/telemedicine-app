@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telemedicine/dto/Slot.dart';
 import 'package:telemedicine/model/Schedule.dart';
 import 'package:telemedicine/model/User.dart';
 
@@ -86,6 +87,17 @@ class ScheduleController {
       Utils.showToast("Unable to update Schedule.",type: "error");
     }
 
+  }
+
+  static getAvailableSlots(String id,String date) async {
+    var res = await Api.get(ApiEndpoints.getAvailableSlotsEndpoint(id,date));
+
+    if (res["statusCode"] == 200 || res["statusCode"] == 201) {
+      Slot slot = Slot.fromJson(res);
+      return slot;
+    }else{
+      Utils.showToast("Unable to get Doctors.",type: "error");
+    }
   }
 
 }

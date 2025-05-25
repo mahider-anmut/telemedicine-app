@@ -35,11 +35,12 @@ class LocalAssets {
   static const String consultingIcon = '$baseIcons/consultation.png';
   static const String favouritesIcon = '$baseIcons/favourite.png';
   static const String favouritesAltIcon = '$baseIcons/favourite2.png';
+  static const String scheduleIcon = '$baseIcons/timetable.png';
 
 
 
 
-  static const String placeholder = "https://via.placeholder.com/150";
+
 
 
   static const String cameraIcon =

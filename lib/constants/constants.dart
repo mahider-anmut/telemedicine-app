@@ -5,6 +5,7 @@ class Constants {
   static const String isDarkMode = "isDarkMode";
   static const String appLang = "appLang";
 
+  static const String userId = "userId";
   static const String firstName = "firstName";
   static const String lastName = "lastName";
   static const String email = "email";

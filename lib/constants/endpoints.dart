@@ -7,6 +7,21 @@ class ApiEndpoints {
   static const String registerEndpoint = '$baseUrl/auth/register';
   static const String resetEndpoint = '$baseUrl/auth/forget-password-request';
 
+  static const String createScheduleEndpoint = '$baseUrl/schedule';
+  static String updateScheduleEndpoint(String id) { return "$baseUrl/schedule/$id";}
+  static String updateWeeklyScheduleEndpoint(String id) { return "$baseUrl/schedule/update-weekly-schedule/$id";}
+  static String updateExceptionScheduleEndpoint(String id) { return "$baseUrl/schedule/update-exception-schedule/$id";}
+
+  static String getScheduleByDoctorIdEndpoint(String doctorId) { return "$baseUrl/schedule/user/$doctorId";}
+
+  static String getAvailableSlotsEndpoint(String doctorId,String date) { return "$baseUrl/schedule/get-available-slot/$doctorId/$date";}
+
+  static String createAppointmentEndpoint = '$baseUrl/appointment';
+
+
+  static String getAvailableDoctors = '$baseUrl/user/all-available-doctors';
+  static String getTopAvailableDoctors = '$baseUrl/user/getTopAvailableDoctors';
+
   static const String notificationsEndpoint = '$baseUrl/notifications';
   static const String uploadEndpoint =  '$baseUrl/upload';
 

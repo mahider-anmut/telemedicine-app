@@ -171,7 +171,7 @@ class MainPage extends StatelessWidget {
                   },
                   child: InfoCardWidget(
                     isDarkMode: false,
-                    icon: LocalAssets.reportIcon,
+                    icon: LocalAssets.scheduleIcon,
                     title: "Schedule Manager",
                     description: "Setup your availability easily.",
                   ),

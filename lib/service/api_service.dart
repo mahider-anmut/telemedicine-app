@@ -18,7 +18,10 @@ class Api {
 
       return {
         "statusCode": response.statusCode,
-        ...decodedData,
+        if (decodedData is Map<String, dynamic>)
+          ...decodedData
+        else
+          "data": decodedData,
       };
     } catch (e) {
       throw Exception('Failed to decode response: ${e.toString()}');
@@ -83,6 +86,42 @@ class Api {
       throw Exception('Unable to Connect to Server: $e');
     }
   }
+
+  static Future<Map<String, dynamic>> getAll(String endpoint, {Map<String, dynamic>? filters,Map<String, dynamic>? body, bool isAuth = true, bool refreshed = false}) async {
+    final Uri uri = Uri.parse(endpoint);
+    final Map<String, String> headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+
+    // Check for internet connection
+    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult==ConnectivityResult.none) {
+      Utils.showToast("No Internet Connection,Please try again.", type: "alert");
+      //throw Exception('No internet connection');
+    }
+
+    // Add Authorization header if needed
+    if (isAuth) {
+      headers['Authorization'] = "Bearer ${await SharedPreference.getString(Constants.authToken)}";
+    }
+
+    try {
+      final http.Response response = await http.get(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        return _processResponse(response);
+      } else {
+        // Handle other status codes
+        return _processResponse(response);
+      }
+    } catch (e) {
+      // Handle any errors
+      // showToast("Unable to Connect to Server", type: "error");
+      throw Exception('Unable to Connect to Server: $e');
+    }
+  }
+
+
 
   static Future<Map<String, dynamic>> post(String endpoint, Map<String, dynamic> body,  {bool isAuth = true,refreshed = false}) async {
     final Uri uri = Uri.parse(endpoint);
