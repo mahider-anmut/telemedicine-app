@@ -51,7 +51,7 @@ class NotificationPage extends StatelessWidget {
               child: TabBarView(
                 children: [
                   NotificationList(filter: "all"),
-                  NotificationList(filter: "shippers"),
+                  NotificationList(filter: "system"),
                   NotificationList(filter: "other"),
                 ],
               ),
@@ -104,14 +104,14 @@ class _NotificationListState extends State<NotificationList> {
       if (widget.filter == "all") {
         return true;
       } else {
-        return notification.group == widget.filter;
+        return notification.type == widget.filter;
       }
     }).toList();
 
     // Group notifications by date
     Map<DateTime, List<Notif.Notification>> groupedNotifications = {};
     for (var notification in filteredNotifications) {
-      DateTime date = DateTime.parse(notification.createdAt);
+      DateTime date = DateTime.parse(notification.createdAt!);
 
       if (groupedNotifications.containsKey(date)) {
         groupedNotifications[date]!.add(notification);
@@ -147,15 +147,24 @@ class _NotificationListState extends State<NotificationList> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  notification.title ?? AppLocalizations.of(context).translate('NoMessage'),
-                  style: TextStyle(color: AppTheme.getThemeExtension(context).titleTextColor!),
+                Row(
+                  children: [
+                    Text(
+                      notification.title ?? AppLocalizations.of(context).translate('NoMessage'),
+                      style: TextStyle(color: AppTheme.getThemeExtension(context).titleTextColor!),
+                    ),
+                    Spacer(),
+                    Text(
+                      notification.createdAt != null
+                          ? DateFormat.yMMMd().format(DateTime.parse(notification.createdAt!))
+                          : AppLocalizations.of(context).translate('NoDate'),
+                      style: TextStyle(color: AppTheme.getThemeExtension(context).titleTextColor!),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 4), // Add some spacing between message and date
+                const SizedBox(height: 4),
                 Text(
-                  notification.createdAt != null
-                      ? DateFormat.yMMMd().format(DateTime.parse(notification.createdAt))
-                      : AppLocalizations.of(context).translate('NoDate'),
+                  notification.message ?? AppLocalizations.of(context).translate('NoMessage'),
                   style: TextStyle(color: AppTheme.getThemeExtension(context).titleTextColor!),
                 ),
               ],

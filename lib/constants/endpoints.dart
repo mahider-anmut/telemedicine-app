@@ -30,7 +30,8 @@ class ApiEndpoints {
   static String getAvailableDoctors = '$baseUrl/user/all-available-doctors';
   static String getTopAvailableDoctors = '$baseUrl/user/getTopAvailableDoctors';
 
-  static const String notificationsEndpoint = '$baseUrl/notifications';
+  static String notificationsEndpoint(String id) { return "$baseUrl/notification/user/$id";}
+
   static const String uploadEndpoint =  '$baseUrl/upload';
 
 
