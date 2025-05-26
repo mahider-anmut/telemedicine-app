@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 
 class Utils {
@@ -115,5 +116,8 @@ class Utils {
     return string[0].toUpperCase() + string.substring(1);
   }
 
+  static String formatTime(DateTime date) {
+    return DateFormat('hh:mm a').format(date);
+  }
 
 }

@@ -192,7 +192,14 @@ class Api {
 
   static Future<Map<String, dynamic>> uploadFile(String filePath) async {
     final Uri uri = Uri.parse(ApiEndpoints.uploadEndpoint);
+
+    final Map<String, String> headers = <String, String>{
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer ${await SharedPreference.getString(Constants.authToken)}"
+    };
+
     final request = http.MultipartRequest('POST', uri);
+    request.headers.addAll(headers);
 
     Map<String, String> fields = const {'upload_preset': 'orcas-test-lpr10ytt'};
 
@@ -209,13 +216,9 @@ class Api {
 
       // Parse and return the JSON response
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = json.decode(response.body);
-        jsonResponse["statusCode"] = response.statusCode;
-        return jsonResponse;
+        return _processResponse(response);
       } else {
-        final Map<String, dynamic> jsonResponse = json.decode(response.body);
-        jsonResponse["statusCode"] = response.statusCode;
-        return jsonResponse;
+        return _processResponse(response);
       }
     } catch (e) {
       throw Exception('Unable to connect to server: $e');

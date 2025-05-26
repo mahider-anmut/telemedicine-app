@@ -6,15 +6,22 @@ import '../constants/textStyles.dart';
 import '../utils/themes.dart';
 import '../view/notificationPage.dart';
 
-class HeaderMiniChatCardWidget extends StatelessWidget {
+class HeaderMiniChatCardWidget extends StatefulWidget {
 
   final String title;
+  final String? imgUrl;
 
   const HeaderMiniChatCardWidget({
     super.key,
     required this.title,
+    required this.imgUrl
   });
-  
+
+  @override
+  State<HeaderMiniChatCardWidget> createState() => _HeaderMiniChatCardWidgetState();
+}
+
+class _HeaderMiniChatCardWidgetState extends State<HeaderMiniChatCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,16 +57,16 @@ class HeaderMiniChatCardWidget extends StatelessWidget {
                     ),
 
                     const SizedBox(width: 8,),
-                    const Row(
+                    Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: AssetImage('assets/images/img/doctor01.jpeg'), // Replace with your image path
+                          backgroundImage: widget.imgUrl!=null ? NetworkImage(widget.imgUrl!): const AssetImage(LocalAssets.avatar) as ImageProvider
                         ),
                         SizedBox(width: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Dr. Angie Brekke', style: TextStyle(color: AppColors.mainTextAltColor)),
+                            Text(widget.title, style: TextStyle(color: AppColors.mainTextAltColor)),
                             Text('Online', style: TextStyle(color: AppColors.mainTextAltColor, fontSize: 12)),
                           ],
                         ),

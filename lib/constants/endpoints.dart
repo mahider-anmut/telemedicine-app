@@ -21,6 +21,10 @@ class ApiEndpoints {
   static String getPatientAppointmentEndpoint(String patientId) { return "$baseUrl/appointment/patient/$patientId";}
   static String updateAppointmentStatusEndpoint(String id) { return "$baseUrl/appointment/update-status/$id";}
 
+  static String getAllChatByUserId(String id) { return "$baseUrl/chat/user/$id";}
+  static String getAllMessageByChatId(String id) { return "$baseUrl/message/chat/$id";}
+
+  static String createMessage = '$baseUrl/message';
 
 
   static String getAvailableDoctors = '$baseUrl/user/all-available-doctors';

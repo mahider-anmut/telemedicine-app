@@ -1,9 +1,3 @@
-import 'dart:ffi';
-
-import 'package:telemedicine/model/MedicalProfile.dart';
-
-import '../model/Statistics.dart';
-import '../model/User.dart';
 
 class Slot {
   List<String>? availableSlots;

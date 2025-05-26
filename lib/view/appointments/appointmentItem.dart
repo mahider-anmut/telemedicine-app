@@ -39,7 +39,7 @@ class _AppointmentItemState extends State<AppointmentItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text1(text1: "${widget.appointment.appointmentDate!.split("T")[0]}  ${widget.appointment.appointmentTime}",size: 15,),
@@ -47,8 +47,6 @@ class _AppointmentItemState extends State<AppointmentItem> {
                         Text2(text2: Utils.capitalize(widget.appointment.appointmentStatus!)),
                         SizedBox(width: 6,)
                       ],
-
-
                     ),
                     const SizedBox(height: 10,),
                     Row(
