@@ -13,12 +13,16 @@ const invoiceSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Paid", "Unpaid", "Cancelled"],
-      default: "Unpaid",
+      enum: ["paid", "unpaid", "cancelled","success"],
+      default: "unpaid",
     },
     transactionId: {
       type: String,
       required: true,
+    },
+    metaData: {
+      type: Object,
+      required: false,
     },
     paymentType: {
       type: String,

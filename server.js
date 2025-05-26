@@ -29,6 +29,7 @@ const userRoutes = require("./routes/userRoutes.js");
 const healthRecordRoutes = require("./routes/healthRecordRoutes");
 const statsRoutes = require("./routes/statisticsRoutes");
 const uploadRoutes = require('./routes/uploadRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 dotenv.config();
 
@@ -60,6 +61,7 @@ app.use("/api/user", auth.isAuthenticated, userRoutes);
 app.use("/api/healthRecord", auth.isAuthenticated, healthRecordRoutes);
 app.use("/api/stats", auth.isAuthenticated, statsRoutes);
 app.use('/api/upload', auth.isAuthenticated, uploadRoutes);
+app.use('/api/payment', auth.isAuthenticated, paymentRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
