@@ -10,8 +10,13 @@ let getChatById = (req, res) => {
 };
 
 let getChatByUserId = (req, res) => {
-  Chat.find({ userId: req.params.userId })
-    .then((chats) => res.json(chats))
+  // Chat.find({ userId: req.params.userId })
+  Chat.find({
+    $or: [
+      { doctorId: req.params.userId },
+      { patientId: req.params.userId }
+    ]
+  }).populate('_patient').populate('_doctor').then((chats) => res.json(chats))
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 

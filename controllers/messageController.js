@@ -9,8 +9,8 @@ let getMessageById = (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 
-let getMessageByUserId = (req, res) => {
-  Message.find({ userId: req.params.userId })
+let getMessageByChatId = (req, res) => {
+  Message.find({ chatId: req.params.chatId })
     .then((messages) => res.json(messages))
     .catch((err) => res.status(400).json({ message: err.message }));
 };
@@ -49,7 +49,7 @@ let deleteMessage = (req, res) => {
 
 module.exports = {
   getMessageById,
-  getMessageByUserId,
+  getMessageByChatId,
   getAllMessages,
   createMessage,
   updateMessage,

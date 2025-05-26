@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const helmet  = require('helmet'); 
 const rateLimit  = require('express-rate-limit');
 const cors = require("cors");
+const http = require("http");
 
 const connectDB = require("./config/db");
 const config = require("./config/config.js");
@@ -10,6 +11,7 @@ const config = require("./config/config.js");
 const initializeAdminUser = require("./utils/initAdmin");
 
 const { hourlyScheduler } = require("./services/schedulerService");
+const { initSocket } = require("./services/socketService");
 
 const {expireOldAppointments,expireNotPaidAppointments} = require("./tasks/AppointmentTasks");
 
@@ -25,7 +27,8 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const scheduleRoutes = require("./routes/scheduleRoutes");
 const userRoutes = require("./routes/userRoutes.js");
 const healthRecordRoutes = require("./routes/healthRecordRoutes");
-const statsRoutes = require("./routes/statisticsRoutes.js");
+const statsRoutes = require("./routes/statisticsRoutes");
+const uploadRoutes = require('./routes/uploadRoutes');
 
 dotenv.config();
 
@@ -56,6 +59,7 @@ app.use("/api/schedule", auth.isAuthenticated, scheduleRoutes);
 app.use("/api/user", auth.isAuthenticated, userRoutes);
 app.use("/api/healthRecord", auth.isAuthenticated, healthRecordRoutes);
 app.use("/api/stats", auth.isAuthenticated, statsRoutes);
+app.use('/api/upload', auth.isAuthenticated, uploadRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -67,6 +71,9 @@ connectDB().then(async () => {
 
   hourlyScheduler("expireOldAppointments",expireOldAppointments);
   hourlyScheduler("expireNotPaidAppointments",expireNotPaidAppointments);
+
+  // const server = http.createServer(app);
+  // initSocket(server);
 
   app.listen(config.SERVER_PORT, () =>
     console.log(`Server running on port ${config.SERVER_PORT}`)
