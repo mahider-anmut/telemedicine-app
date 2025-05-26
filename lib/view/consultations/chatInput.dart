@@ -7,7 +7,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:telemedicine/constants/colors.dart';
 import 'package:telemedicine/controller/chatController.dart';
 
-import '../../service/cloudinary_service.dart';
 // import 'package:record/record.dart';
 
 
