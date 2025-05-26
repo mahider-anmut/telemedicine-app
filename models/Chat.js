@@ -19,6 +19,7 @@ const chatSchema = new mongoose.Schema(
     },
     lastMessage: {
       type: String,
+      default: "",
     },
     unreadCount: {
       type: Number,

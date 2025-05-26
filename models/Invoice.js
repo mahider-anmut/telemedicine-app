@@ -7,6 +7,10 @@ const invoiceSchema = new mongoose.Schema(
       ref: "Appointment",
       required: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     price: {
       type: Number,
       required: true,

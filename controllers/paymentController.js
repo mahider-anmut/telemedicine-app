@@ -4,13 +4,17 @@ const Invoice = require('../models/Invoice');
 const Notification = require('../models/Notification');
 
 const config = require('../config/config');
+const Chat = require('../models/Chat');
 
 config
 
 const initiatePayment = async (req, res) => {
     var {firstName,lastName,email,phone,appointmentId,price,paymentType,transactionId} = req.body
 
-    const newInvoice = new Invoice(req.body);
+    var data = req.body;
+    data.userId = req.id;
+
+    const newInvoice = new Invoice(data);
       newInvoice
         .save()
         .then((invoice) => {
@@ -58,10 +62,17 @@ const paymentCallback = async (req, res) => {
     .then((invoice) => {
         if (!invoice) return res.status(404).json({ message: "Invoice not found" });
         Notification.create({
-            userId: invoice.appointmentId.patientId,
+            userId: invoice.userId,
             type: "transaction",
             title: "Appointment Payment Status Updated",
             message: "your appointment payment status has been updated",
+        });
+        Chat.create({
+            doctorId: appointmentId.doctorId,
+            patientId: appointmentId.patientId,
+            status: "open",
+            lastMessage: "",
+            unreadCount: 0
         });
         res.json(invoice);
     })
@@ -86,4 +97,13 @@ const paymentStatusByAppointmentId = async (req, res) => {
     .catch((err) => res.status(400).json({ message: err.message }));
 }
 
-module.exports = { initiatePayment,paymentCallback,paymentStatusByAppointmentId,paymentStatusByTransactionId };
+const paymentStatusByUserId = async (req, res) => {
+    Invoice.findOne({userId: req.params.id})
+    .then((invoice) => {
+        if (!invoice) return res.status(404).json({ message: "Invoice not found" });
+        res.json({status: invoice.status});
+    })
+    .catch((err) => res.status(400).json({ message: err.message }));
+}
+
+module.exports = { initiatePayment,paymentCallback,paymentStatusByAppointmentId,paymentStatusByTransactionId,paymentStatusByUserId };
