@@ -3,6 +3,7 @@ dotenv.config();
 
 module.exports = {
   APP_NAME: "Telemedicine",
+  API_URL: "https://telemedicine-back-end-production.up.railway.app",
   BASE_URL: "",
   FRONTEND_URL: "http://localhost:3000",
   SERVER_PORT: process.env.PORT || 5000,
@@ -17,13 +18,13 @@ module.exports = {
     NEXMO_KEY: "",
     NEXMO_PASSWORD: ""
   },
-  Mail: {
-    FROM: '"Telemedicine.com" noreply.telemedicine.com',
-    HOST: "smtp.gmail.com",
-    PORT: 587,
+  MAIL: {
+    FROM: process.env.SMTP_FROM,
+    HOST: process.env.SMTP_HOST || "smtp.gmail.com",
+    PORT: process.env.SMTP_PORT || 587,
     AUTH: {
-      user: "",
-      pass: ""
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD
     }
   },
   CLOUDINARY: { 

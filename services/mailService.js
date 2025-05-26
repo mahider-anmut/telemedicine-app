@@ -3,10 +3,10 @@ let config = require("../config/config");
 
 var sendMail = (receiverEmail, subject, bodyText, bodyHtml) => {
   let transporter = nodemailer.createTransport({
-    host: config.Mail.HOST,
-    port: config.Mail.PORT,
+    host: config.MAIL.HOST,
+    port: config.MAIL.PORT,
     secure: false,
-    auth: config.Mail.AUTH,
+    auth: config.MAIL.AUTH,
     tls: {
       rejectUnauthorized: false,
       ciphers: "SSLv3"
@@ -14,7 +14,7 @@ var sendMail = (receiverEmail, subject, bodyText, bodyHtml) => {
   });
 
   let mailOptions = {
-    from: config.Mail.FROM,
+    from: config.MAIL.FROM,
     to: receiverEmail,
     subject: subject,
     text: bodyText,
@@ -23,10 +23,10 @@ var sendMail = (receiverEmail, subject, bodyText, bodyHtml) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log(error);
+      console.log("error: " + error);
       return error;
     }
-    console.log(info);
+    console.log("info: " + info);
     return info;
   });
 };

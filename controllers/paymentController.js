@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const Invoice = require('../models/Invoice');
+const Notification = require('../models/Notification');
 
 const config = require('../config/config');
 
@@ -8,10 +9,6 @@ config
 
 const initiatePayment = async (req, res) => {
     var {firstName,lastName,email,phone,appointmentId,price,paymentType,transactionId} = req.body
-
-
-    
-    
 
     const newInvoice = new Invoice(req.body);
       newInvoice
@@ -56,10 +53,16 @@ const initiatePayment = async (req, res) => {
 };
 
 const paymentCallback = async (req, res) => {
-    console.log(req.body);
-    Invoice.findOneAndUpdate({transactionId: req.body.tx_ref}, {metaData: req.body,status:req.body.status}, { new: true })
+    // console.log(req.body);
+    Invoice.findOneAndUpdate({transactionId: req.body.tx_ref}, {metaData: req.body,status:req.body.status}, { new: true }).populate('appointmentId')
     .then((invoice) => {
         if (!invoice) return res.status(404).json({ message: "Invoice not found" });
+        Notification.create({
+            userId: invoice.appointmentId.patientId,
+            type: "transaction",
+            title: "Appointment Payment Status Updated",
+            message: "your appointment payment status has been updated",
+        });
         res.json(invoice);
     })
     .catch((err) => res.status(400).json({ message: err.message }));

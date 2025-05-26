@@ -1,4 +1,6 @@
 const Appointment = require("../models/Appointment");
+const Notification = require("../models/Notification");
+
 const { isTimeSlotAvailable } = require("../utils/scheduleUtils");
 
 let getAppointmentById = (req, res) => {
@@ -113,6 +115,13 @@ const updateAppointmentStatus = async (req, res) => {
     if (!updatedAppointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
+
+    Notification.create({
+      userId: req.id,
+      type: "account",
+      title: "Appointment Status Updated",
+      message: "your appointment status has been updated to " + appointmentStatus,
+    });
 
     res.json(updatedAppointment);
   } catch (err) {

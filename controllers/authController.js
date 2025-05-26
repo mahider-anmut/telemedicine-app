@@ -1,6 +1,9 @@
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+
 const User = require("../models/User");
+const Notification = require("../models/Notification");
+
 const {generateToken} = require("../utils/utils");
 
 const config = require("../config/config.js");
@@ -108,6 +111,13 @@ let forgetPasswordRequest = async (req, res) => {
 
     await Email.sendMail(userEmail, subject, body, bodyHtml);
 
+    Notification.create({
+      userId: user._id,
+      type: "system",
+      title: "Password Reset Request",
+      message: "A password reset request has been made",
+    });
+
     res.json({ message: "Password reset email sent" });
   } catch (error) {
     console.error(error);
@@ -117,8 +127,7 @@ let forgetPasswordRequest = async (req, res) => {
 
 let forgetPasswordUpdate = async (req, res) => {
 try {
-    const { token } = req.params;
-    const { newPassword } = req.body;
+    const { newPassword,token } = req.body;
 
     const user = await User.findOne({
       resetPasswordToken: token,
@@ -133,6 +142,13 @@ try {
 
     await user.save();
 
+    Notification.create({
+      userId: user._id,
+      type: "system",
+      title: "Password Reset Success",
+      message: "your password has been reset successfully",
+    });
+
     res.json({ message: "Password reset successful" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -143,7 +159,7 @@ let resetPassword = async (req, res) => {
 try {
     const { currentPassword, newPassword } = req.body;
 
-    const user = await User.findById(req.id);
+    const user = await User.findById(req.id).select("+password");
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
@@ -152,6 +168,13 @@ try {
     user.password = newPassword
     await user.save();
 
+    Notification.create({
+      userId: user._id,
+      type: "system",
+      title: "Password update Success",
+      message: "your password has been updated successfully",
+    });
+    
     res.json({ message: "Password updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
