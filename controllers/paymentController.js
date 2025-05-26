@@ -98,10 +98,13 @@ const paymentStatusByAppointmentId = async (req, res) => {
 }
 
 const paymentStatusByUserId = async (req, res) => {
-    Invoice.findOne({userId: req.params.id})
+    Invoice.find({userId: req.params.id})
     .then((invoice) => {
         if (!invoice) return res.status(404).json({ message: "Invoice not found" });
-        res.json({status: invoice.status});
+        var newInvoice = invoice.map(inv=>{
+            return {status: inv.status, appointmentId: inv.appointmentId, transactionId: inv.transactionId,userId: inv.userId, price: inv.price, paymentType: inv.paymentType}
+        });
+        res.json(newInvoice);
     })
     .catch((err) => res.status(400).json({ message: err.message }));
 }
