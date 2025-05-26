@@ -5,6 +5,7 @@ const Notification = require('../models/Notification');
 
 const config = require('../config/config');
 const Chat = require('../models/Chat');
+const Appointment = require('../models/Appointment');
 
 config
 
@@ -74,6 +75,7 @@ const paymentCallback = async (req, res) => {
             lastMessage: "",
             unreadCount: 0
         });
+        Appointment.findByIdAndUpdate(invoice.appointmentId, {appointmentStatus: "readyForSession"}, { new: true })
         res.json(invoice);
     })
     .catch((err) => res.status(400).json({ message: err.message }));
