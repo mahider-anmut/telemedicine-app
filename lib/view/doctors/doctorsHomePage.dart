@@ -44,7 +44,7 @@ class _DoctorsHomePageState extends State<DoctorsHomePage> {
         doctors = response;
       });
     } catch (e) {
-      Utils.showSnackBar(context, "failed to load Doctors");
+      Utils.showSnackBar(context, "failed to load Doctors",type: "error");
     } finally {
       setState(() => isLoading = false);
     }

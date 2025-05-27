@@ -1,193 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:telemedicine/view/doctors/doctorSearchItem.dart';
 
 import '../../constants/colors.dart';
+import '../../controller/doctorController.dart';
+import '../../dto/Doctor.dart';
+import '../../utils/utils.dart';
 import '../../widgets/custom/chiipppp.dart';
 import '../../widgets/custom/custombtn.dart';
 import '../../widgets/custom/detailstext1.dart';
 import '../../widgets/custom/detailstext2.dart';
 import '../../widgets/custom/text11.dart';
+import '../../widgets/headerMiniCardWidget.dart';
+import '../../widgets/ratingStarsWidget.dart';
 
 
-class DoctorSearchModal extends StatelessWidget {
+class DoctorSearchModal extends StatefulWidget {
   const DoctorSearchModal({super.key});
+
+  @override
+  State<DoctorSearchModal> createState() => _DoctorSearchModalState();
+}
+
+class _DoctorSearchModalState extends State<DoctorSearchModal> {
+  List<Doctor> doctors = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDoctors();
+  }
+
+  Future<void> fetchDoctors() async {
+    setState(() => isLoading = true);
+
+    try {
+      // Replace with your API call or service method
+      final response = await DoctorController.fetchAllAvailableDoctors(); // List<User>
+
+      setState(() {
+        doctors = response;
+      });
+    } catch (e) {
+      Utils.showSnackBar(context, "failed to load Doctors",type: "error");
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 13,vertical: 14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-
-                      const Spacer(),
-                      const Text1(text1: 'Doctors'),
-                      const Spacer(),
-
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Chipppp(text: 'All'),
-                        SizedBox(width: 10,),
-                        Chipppp(text: 'Dentist',color: AppColors.buttonColor,),
-                        SizedBox(width: 10,),
-                        Chipppp(text: 'Cardiologist'),
-                        SizedBox(width: 10,),
-                        Chipppp(text: 'Nurologist'),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: AppColors.tabColor,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.asset(
-                                'assets/images/img/drjane.jpg',
-                                width: 80,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 5),
-                                        width: 150,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.bgColor,
-                                            borderRadius: BorderRadius.circular(8)),
-                                        child: const Row(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 8,
-                                              backgroundColor: AppColors.buttonColor,
-                                              child: Icon(
-                                                Icons.check,
-                                                color: Colors.white,
-                                                size: 10,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text11(
-                                              text2: ' Doctor',
-                                              color: AppColors.buttonColor,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      const Icon(
-                                        Icons.favorite,
-                                        color: AppColors.buttonColor,
-                                        size: 21,
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 6,
-                                  ),
-                                  const Text1(
-                                    text1: 'Dr.Jane Kooper',
-                                  ),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  const Text2(text2: 'Dentist'),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.star,
-                                        color: AppColors.buttonColor,
-                                        size: 20,
-                                      ),
-                                      const Icon(
-                                        Icons.star,
-                                        color: AppColors.buttonColor,
-                                        size: 20,
-                                      ),
-                                      const Icon(
-                                        Icons.star,
-                                        color: AppColors.buttonColor,
-                                        size: 20,
-                                      ),
-                                      const Icon(
-                                        Icons.star,
-                                        color: AppColors.buttonColor,
-                                        size: 20,
-                                      ),
-                                      const Icon(
-                                        Icons.star,
-                                        color: AppColors.buttonColor,
-                                        size: 20,
-                                      ),
-                                      const Text1(text1: '4.6'),
-                                      const Spacer(),
-                                      Container(
-                                        color: Colors.white,
-                                        width: 1,
-                                        height: 16,
-                                      ),
-                                      const Spacer(),
-                                      const Text2(text2: '49 Reviews')
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 8,),
-                        CustomButton(text: 'Make Appointment', onTap: () {
-                          // Navigator.of(context).push(
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             const BookAppointment()));
-
-                        })                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const HeaderMiniCardWidget(title: "Doctors Search"),
+            const SizedBox(height: 8.0),
+            const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: [
+                    Chipppp(text: 'All'),
+                    SizedBox(width: 10,),
+                    Chipppp(text: 'Dentist',color: AppColors.buttonColor,),
+                    SizedBox(width: 10,),
+                    Chipppp(text: 'Cardiologist'),
+                    SizedBox(width: 10,),
+                    Chipppp(text: 'Nurologist'),
+                  ],
+                ),
               ),
             ),
-          )),
+            const SizedBox(
+              height: 8,
+            ),
+
+            if (isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (doctors.isEmpty)
+              const Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Center(child: Text('No doctors available')),
+                ),
+              )
+            else
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: doctors.length,
+                itemBuilder: (context, index) {
+                  return DoctorSearchItem(doctor: doctors[index]);
+                },
+              ),
+            const SizedBox(height: 16.0),
+          ],
+        ),
+      ),
     );
   }
 }
