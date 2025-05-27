@@ -58,7 +58,7 @@ const initiatePayment = async (req, res) => {
 };
 
 const paymentCallback = async (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     Invoice.findOneAndUpdate({transactionId: req.body.tx_ref}, {metaData: req.body,status:req.body.status}, { new: true }).populate('appointmentId')
     .then((invoice) => {
         if (!invoice) return res.status(404).json({ message: "Invoice not found" });
