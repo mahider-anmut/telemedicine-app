@@ -58,10 +58,18 @@ const initiatePayment = async (req, res) => {
 };
 
 const paymentCallback = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
+    console.log(req.body.status,"req.body.status");
+    console.log(req.body.tx_ref,"req.body.tx_ref");
     Invoice.findOneAndUpdate({transactionId: req.body.tx_ref}, {metaData: req.body,status:req.body.status}, { new: true }).populate('appointmentId')
     .then((invoice) => {
         if (!invoice) return res.status(404).json({ message: "Invoice not found" });
+        console.log(invoice.userId,"invoice.userId");
+        console.log(invoice.appointmentId._id,"invoice.appointmentId._id");
+        
+        var appointmentId = invoice.appointmentId._id.toString();
+        Appointment.updateOne({"_id":appointmentId}, {appointmentStatus: "readyForSession"}, { new: true }).exec()
+        
         Notification.create({
             userId: invoice.userId,
             type: "transaction",
@@ -76,7 +84,9 @@ const paymentCallback = async (req, res) => {
             lastMessage: "",
             unreadCount: 0
         });
-        Appointment.findByIdAndUpdate(invoice.appointmentId._id, {appointmentStatus: "readyForSession"}, { new: true })
+        
+        
+        
         res.json(invoice);
     })
     .catch((err) => res.status(400).json({ message: err.message }));
