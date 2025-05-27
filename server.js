@@ -67,7 +67,7 @@ app.use("/api/user", auth.isAuthenticated, userRoutes);
 app.use("/api/healthRecord", auth.isAuthenticated, healthRecordRoutes);
 app.use("/api/stats", auth.isAuthenticated, statsRoutes);
 app.use('/api/upload', auth.isAuthenticated, uploadRoutes);
-app.use('/api/payment', auth.isAuthenticated, paymentRoutes);
+app.use('/api/payment', paymentRoutes);
 app.use('/api/institute', auth.isAuthenticated, instituteRoutes);
 
 app.use((err, req, res, next) => {
