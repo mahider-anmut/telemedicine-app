@@ -36,19 +36,19 @@ dotenv.config();
 
 const app = express();
 
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 
 app.use(cors());
 app.use(express.json());
 app.use(helmet()); 
 
-app.use(rateLimit({
-  windowMs: 5 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: 'Too many requests, please try again later',
-}));
+// app.use(rateLimit({
+//   windowMs: 5 * 60 * 1000,
+//   max: 100,
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   message: 'Too many requests, please try again later',
+// }));
 
 
 app.get("/", (req, res) => {
