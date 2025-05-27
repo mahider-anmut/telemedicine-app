@@ -31,6 +31,7 @@ const statsRoutes = require("./routes/statisticsRoutes");
 const uploadRoutes = require('./routes/uploadRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const instituteRoutes = require('./routes/instituteRoutes');
+const videoCallRoutes = require('./routes/videoCallRoutes');
 
 dotenv.config();
 
@@ -69,6 +70,7 @@ app.use("/api/stats", auth.isAuthenticated, statsRoutes);
 app.use('/api/upload', auth.isAuthenticated, uploadRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/institute', auth.isAuthenticated, instituteRoutes);
+app.use('/api/videoCall', auth.isAuthenticated, videoCallRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

@@ -39,5 +39,6 @@ module.exports = {
     ENCRYPTION_KEY: process.env.CHAPA_ENCRYPTION_KEY,
     PAYMENT_RETURN_URL: process.env.CHAPA_RETURN_URL,
     PAYMENT_CALLBACK_URL: process.env.CHAPA_CALLBACK_URL
-  }
+  },
+  DAILYCO_API_KEY: process.env.DAILYCO_API_KEY,
 };

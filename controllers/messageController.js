@@ -1,3 +1,4 @@
+const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 
 let getMessageById = (req, res) => {
@@ -25,7 +26,11 @@ let createMessage = (req, res) => {
   const newMessage = new Message(req.body);
   newMessage
     .save()
-    .then((message) => res.status(201).json(message))
+    .then((message) => {
+      var chatId = message.chatId.toString();
+      Chat.updateOne({"_id":chatId}, {lastMessage: message.messageType=="text"?message.content:message.messageType}, { new: true }).exec()
+      res.status(201).json(message)
+    })
     .catch((err) => res.status(400).json({ message: err.message }));
 };
 

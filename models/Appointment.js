@@ -35,6 +35,9 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    callUrl: {
+      type: String,
+    },
     appointmentStatus: {
       type: String,
       enum: ["pending", "accepted","waitingPayment","readyForSession", "cancelled", "completed","expired"],
