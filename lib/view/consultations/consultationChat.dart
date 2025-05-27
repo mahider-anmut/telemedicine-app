@@ -271,6 +271,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:telemedicine/model/Message.dart';
 import 'dart:io';
 
@@ -380,8 +381,26 @@ class _ConsultationChatState extends State<ConsultationChat> {
     });
   }
 
-  void startVideoCall(BuildContext context) {
-    ChatController.initVideoCall(context, widget.chat.appointmentId!);
+  Future<bool> requestPermissions() async {
+    final statuses = await [
+      Permission.camera,
+      Permission.microphone,
+    ].request();
+
+    final allGranted = statuses.values.every((status) => status.isGranted);
+
+    return allGranted;
+  }
+
+
+  Future<void> startVideoCall(BuildContext context) async {
+    bool granted = await requestPermissions();
+    if (granted) {
+      ChatController.initVideoCall(context, widget.chat.appointmentId!);
+    } else {
+      Utils.showToast("Camera and microphone permissions are required to start the video call.",type: "error");
+    }
+    // ChatController.initVideoCall(context, widget.chat.appointmentId!);
   }
 
   @override

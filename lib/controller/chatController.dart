@@ -15,7 +15,7 @@ import '../constants/constants.dart';
 import '../utils/utils.dart';
 import '../utils/validators.dart';
 import '../view/auth/loginPage.dart';
-import '../view/consultations/videoCall.dart';
+import '../view/consultations/videoCall2.dart';
 import '../view/homePage.dart';
 
 class ChatController {
@@ -64,12 +64,14 @@ class ChatController {
 
     if (res["statusCode"] == 200 || res["statusCode"] == 201) {
       String url = res["callUrl"];
-      String fullUrl = "$url?redirect_on_leave=${Uri.encodeComponent("https://google.com")}";
+      // String fullUrl = "$url?redirect_on_leave=${Uri.encodeComponent("https://google.com")}";
       await Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => VideoCallPage(
-          checkoutUrl: fullUrl,
-          successUrl: 'https://google.com',
-        ),
+        // builder: (_) => VideoCallPage(
+        //   checkoutUrl: fullUrl,
+        //   successUrl: 'https://google.com',
+        // ),
+          builder: (_) => VideoCallPage(url: url),
+
       ));
     }else{
       Utils.showToast("Unable to navigate to payment url.",type: "error");
