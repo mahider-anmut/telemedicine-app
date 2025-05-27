@@ -69,14 +69,14 @@ const paymentCallback = async (req, res) => {
             message: "your appointment payment status has been updated",
         });
         Chat.create({
-            doctorId: appointmentId.doctorId,
-            patientId: appointmentId.patientId,
-            appointmentId:appointmentId._id,
+            doctorId: invoice.appointmentId.doctorId,
+            patientId: invoice.appointmentId.patientId,
+            appointmentId:invoice.appointmentId._id,
             status: "open",
             lastMessage: "",
             unreadCount: 0
         });
-        Appointment.findByIdAndUpdate(invoice.appointmentId, {appointmentStatus: "readyForSession"}, { new: true })
+        Appointment.findByIdAndUpdate(invoice.appointmentId._id, {appointmentStatus: "readyForSession"}, { new: true })
         res.json(invoice);
     })
     .catch((err) => res.status(400).json({ message: err.message }));
