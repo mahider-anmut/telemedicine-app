@@ -549,12 +549,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // IconButton(
-                            //   icon: Icon(Icons.menu,color: AppColors.mainIconColor,),
-                            //   onPressed: () {
-                            //     Scaffold.of(context).openDrawer();
-                            //   },
-                            // ),
+                            IconButton(
+                              icon: Icon(Icons.arrow_back,color: AppColors.mainIconColor,),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
                               Spacer()
                             // IconButton(
                             //   icon: Icon(Icons.notifications,color: AppColors.mainIconColor!,),

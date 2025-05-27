@@ -32,11 +32,20 @@ class DoctorSpecialityModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-     
-      body: SafeArea(
+    return GestureDetector(
+      onTap: ()=> FocusScope.of(context).unfocus(),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.75,
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(32.0),
+            topRight: Radius.circular(32.0),
+          ),
+        ),
         child: Column(
-          children: [
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 14),
               child: Row(
@@ -49,8 +58,8 @@ class DoctorSpecialityModal extends StatelessWidget {
               ),
             ),
 
-        
-        
+
+
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -71,6 +80,7 @@ class DoctorSpecialityModal extends StatelessWidget {
         ),
       ),
     );
+
   }
 }
 
@@ -81,23 +91,26 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CircleAvatar(
-          radius: 25,
-          backgroundColor: Colors.white,
-          child: Icon(
-            category.icon,
-            color: AppColors.buttonColor,
-            size: 28,
+    return InkWell(
+      onTap: (){Navigator.pop(context);},
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircleAvatar(
+            radius: 25,
+            backgroundColor: Colors.white,
+            child: Icon(
+              category.icon,
+              color: AppColors.buttonColor,
+              size: 28,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Flexible(
-            child: Text1(text1: category.name,size: 11,)
-        ),
-      ],
+          const SizedBox(height: 8),
+          Flexible(
+              child: Text1(text1: category.name,size: 11,)
+          ),
+        ],
+      ),
     );
   }
 }
@@ -108,3 +121,15 @@ class Category {
 
   Category(this.name, this.icon);
 }
+
+
+
+
+
+
+
+
+
+
+
+
