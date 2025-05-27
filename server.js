@@ -35,11 +35,11 @@ dotenv.config();
 
 const app = express();
 
+app.set('trust proxy', true);
+
 app.use(cors());
 app.use(express.json());
 app.use(helmet()); 
-
-app.set('trust proxy', true);
 
 app.use(rateLimit({
   windowMs: 5 * 60 * 1000,
