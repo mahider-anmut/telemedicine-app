@@ -10,11 +10,13 @@ class HeaderMiniChatCardWidget extends StatefulWidget {
 
   final String title;
   final String? imgUrl;
+  final Function? rightIconPress;
 
   const HeaderMiniChatCardWidget({
     super.key,
     required this.title,
-    required this.imgUrl
+    required this.imgUrl,
+    required this.rightIconPress
   });
 
   @override
@@ -74,9 +76,11 @@ class _HeaderMiniChatCardWidgetState extends State<HeaderMiniChatCardWidget> {
                     ),
                     const Spacer(),
                     IconButton(
-                      icon: const Icon(Icons.more_vert, color: AppColors.mainIconColor),
+                      icon: const Icon(Icons.video_call_outlined, color: AppColors.mainIconColor),
                       onPressed: () {
-                        // More actions
+                        if(widget.rightIconPress!=null){
+                          widget.rightIconPress!(context);
+                        }
                       },
                     ),
 

@@ -41,6 +41,8 @@ class ApiEndpoints {
 
   static String initPayment = '$baseUrl/payment/initiate';
 
+  static String initVideoCall(String id) { return "$baseUrl/videoCall/appointment/$id";}
+
   static const String uploadEndpoint =  '$baseUrl/upload';
 
 

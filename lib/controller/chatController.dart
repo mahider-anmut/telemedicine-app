@@ -15,6 +15,7 @@ import '../constants/constants.dart';
 import '../utils/utils.dart';
 import '../utils/validators.dart';
 import '../view/auth/loginPage.dart';
+import '../view/consultations/videoCall.dart';
 import '../view/homePage.dart';
 
 class ChatController {
@@ -55,6 +56,24 @@ class ChatController {
   static uploadFile (File file) async {
     var res = await Api.uploadFile(file.path);
     return res["url"];
+  }
+
+  static initVideoCall (BuildContext context ,String appointmentId) async {
+
+    var res = await Api.get(ApiEndpoints.initVideoCall(appointmentId));
+
+    if (res["statusCode"] == 200 || res["statusCode"] == 201) {
+      String url = res["callUrl"];
+      String fullUrl = "$url?redirect_on_leave=${Uri.encodeComponent("https://google.com")}";
+      await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => VideoCallPage(
+          checkoutUrl: fullUrl,
+          successUrl: 'https://google.com',
+        ),
+      ));
+    }else{
+      Utils.showToast("Unable to navigate to payment url.",type: "error");
+    }
   }
 
 }

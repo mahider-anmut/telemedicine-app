@@ -4,6 +4,7 @@ class Chat {
   final String? id;
   final String? doctorId;
   final String? patientId;
+  final String? appointmentId;
   final String? status;
   final int? unreadCount;
   final String? lastMessage;
@@ -12,13 +13,14 @@ class Chat {
   final User? doctor;
 
 
-  Chat({this.id, this.doctorId, this.patientId, this.status,this.unreadCount=0,this.lastMessage,this.patient,this.doctor,this.lastMessageTimestamp});
+  Chat({this.id, this.doctorId, this.patientId, this.status,this.unreadCount=0,this.lastMessage,this.patient,this.doctor,this.appointmentId,this.lastMessageTimestamp});
 
   factory Chat.fromJson(Map<String, dynamic> json) {
     return Chat(
       id: json['_id'],
       doctorId: json['doctorId'],
       patientId: json['patientId'],
+      appointmentId: json['appointmentId'],
       status: json['status'],
       unreadCount: json['unreadCount'] ?? 0,
       lastMessage: json['lastMessage'],
@@ -33,6 +35,7 @@ class Chat {
       '_id': id,
       'doctorId': doctorId,
       'patientId': patientId,
+      'appointmentId':appointmentId,
       'status': status,
       'unreadCount': unreadCount,
       'lastMessage': lastMessage,

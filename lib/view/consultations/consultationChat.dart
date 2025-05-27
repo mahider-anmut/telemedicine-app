@@ -268,6 +268,8 @@
 
 
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:telemedicine/model/Message.dart';
 import 'dart:io';
@@ -302,6 +304,7 @@ class _ConsultationChatState extends State<ConsultationChat> {
 
   var role = "";
 
+  Timer? _timer;
 
 
   @override
@@ -309,6 +312,13 @@ class _ConsultationChatState extends State<ConsultationChat> {
     super.initState();
 
     fetchMessages();
+    _startPullingMessages();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> fetchMessages() async {
@@ -328,6 +338,19 @@ class _ConsultationChatState extends State<ConsultationChat> {
     } finally {
       setState(() => isLoading = false);
     }
+  }
+
+  void _startPullingMessages() {
+    _timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      pullMessage();
+    });
+  }
+  pullMessage() async {
+    List<Message> messages = await ChatController.getAllMessageByChatId(widget.chat.id!);
+    if (!mounted) return;
+    setState(() {
+      allMessages = messages;
+    });
   }
 
   Future<void> sendMessage(String content, {String type = "text"}) async {
@@ -357,12 +380,16 @@ class _ConsultationChatState extends State<ConsultationChat> {
     });
   }
 
+  void startVideoCall(BuildContext context) {
+    ChatController.initVideoCall(context, widget.chat.appointmentId!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          HeaderMiniChatCardWidget(title: "${role=="doctor"?widget.chat.patient?.firstName:widget.chat.doctor?.firstName} ${role=="doctor"?widget.chat.patient?.lastName:widget.chat.doctor?.lastName}",imgUrl: null),
+          HeaderMiniChatCardWidget(title: "${role=="doctor"?widget.chat.patient?.firstName:widget.chat.doctor?.firstName} ${role=="doctor"?widget.chat.patient?.lastName:widget.chat.doctor?.lastName}",imgUrl: null,rightIconPress: startVideoCall,),
           SizedBox(height: 8.0),
           Expanded(
             child: ListView.builder(
