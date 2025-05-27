@@ -1,5 +1,6 @@
 class ApiEndpoints {
-  static const String baseUrl = 'http://172.20.10.12:5001/api';
+  // static const String baseUrl = 'http://172.20.10.12:5001/api';
+  static const String baseUrl = 'https://telemedicine-back-end-production.up.railway.app/api';
   // static const String baseUrl = 'http://172.20.10.12:5001/api';
 
 
@@ -37,6 +38,8 @@ class ApiEndpoints {
   static String getTopAvailableDoctors = '$baseUrl/user/getTopAvailableDoctors';
 
   static String notificationsEndpoint(String id) { return "$baseUrl/notification/user/$id";}
+
+  static String initPayment = '$baseUrl/payment/initiate';
 
   static const String uploadEndpoint =  '$baseUrl/upload';
 

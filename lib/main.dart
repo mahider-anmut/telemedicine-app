@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -7,8 +9,15 @@ import 'providers/localeProvider.dart';
 import 'view/auth/splashScreen.dart';
 import 'service/localization.dart';
 
+// import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter_android/webview_flutter_android.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // if (Platform.isAndroid) {
+  //   WebViewPlatform.instance = SurfaceAndroidWebView();
+  // }
 
   runApp(
     MultiProvider(

@@ -3,12 +3,15 @@ import 'package:telemedicine/constants/assets.dart';
 import 'package:telemedicine/model/Appointment.dart';
 import 'package:telemedicine/model/User.dart';
 import 'package:telemedicine/utils/utils.dart';
+import 'package:telemedicine/view/consultations/consultationHomePage.dart';
 import 'package:telemedicine/view/modals/addAppointmentModal.dart';
 import 'package:telemedicine/widgets/ratingStarsWidget.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/constants.dart';
 import '../../controller/appointmentController.dart';
 import '../../dto/Doctor.dart';
+import '../../service/shared_preference.dart';
 import '../../widgets/custom/custom_outline_button.dart';
 import '../../widgets/custom/custombtn.dart';
 import '../../widgets/custom/detailstext1.dart';
@@ -26,6 +29,23 @@ class AppointmentItem extends StatefulWidget {
 }
 
 class _AppointmentItemState extends State<AppointmentItem> {
+
+  var role = "";
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    var userRole = await SharedPreference.getString(Constants.role);
+
+    setState(() {
+      role=userRole;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,7 +84,7 @@ class _AppointmentItemState extends State<AppointmentItem> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                                Text1(
-                                text1: "${widget.appointment.patient?.firstName} ${widget.appointment.patient?.lastName}",
+                                text1: "${role=="doctor"?widget.appointment.patient?.firstName:widget.appointment.doctor?.firstName} ${role=="doctor"?widget.appointment.patient?.lastName:widget.appointment.doctor?.lastName}",
                               ),
                               Row(
                                 children: [
@@ -88,19 +108,77 @@ class _AppointmentItemState extends State<AppointmentItem> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Row(
-                      children: [
-                        Flexible(child: CustomOutlinedButton(text: 'Cancel', onTap: () async {
-                          await AppointmentController.updateStatus(context,widget.appointment.id!,"cancelled");
-                          widget.fetchAppointments();
-                        })),
-                         const SizedBox(width: 10,),
-                        Flexible(child: CustomButton(text: 'Open Chat', onTap: () {
+                    // Visibility(
+                    //   visible: role=="patient" && widget.appointment.appointmentStatus=="accepted",
+                    //   child: Row(
+                    //     children: [
+                    //       Flexible(child: CustomOutlinedButton(text: 'Cancel', onTap: () async {
+                    //         await AppointmentController.updateStatus(context,widget.appointment.id!,"cancelled");
+                    //         widget.fetchAppointments();
+                    //       })),
+                    //        const SizedBox(width: 10,),
+                    //       Flexible(child: CustomButton(text: 'Make Payment', onTap: () {
+                    //
+                    //       })),
+                    //
+                    //     ],
+                    //   ),
+                    // ),
+                    Visibility(
+                      visible: role=="patient" && widget.appointment.appointmentStatus=="accepted",
+                      child: Row(
+                        children: [
+                          Flexible(child: CustomOutlinedButton(text: 'Cancel', onTap: () async {
+                            await AppointmentController.updateStatus(context,widget.appointment.id!,"cancelled");
+                            widget.fetchAppointments();
+                          })),
+                          const SizedBox(width: 10,),
+                          Flexible(child: CustomButton(text: 'Make Payment', onTap: () async {
+                            await AppointmentController.initPayment(context,widget.appointment.sessionPrice!.toString(),widget.appointment.id!);
+                            widget.fetchAppointments();
+                          })),
 
-                        })),
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: widget.appointment.appointmentStatus=="readyForSession",
+                      child: Row(
+                        children: [
+                          // Flexible(child: CustomOutlinedButton(text: 'Cancel', onTap: () async {
+                          //   await AppointmentController.updateStatus(context,widget.appointment.id!,"cancelled");
+                          //   widget.fetchAppointments();
+                          // })),
+                          // const SizedBox(width: 10,),
+                          Flexible(child: CustomButton(text: 'Open Chat', onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ConsultationHomePage()),
+                            );
+                          })),
 
-                      ],
-                    )
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: role=="doctor" && widget.appointment.appointmentStatus=="pending",
+                      child: Row(
+                        children: [
+                          Flexible(child: CustomOutlinedButton(text: 'Reject', onTap: () async {
+                            await AppointmentController.updateStatus(context,widget.appointment.id!,"cancelled");
+                            widget.fetchAppointments();
+                          })),
+                          const SizedBox(width: 10,),
+                          Flexible(child: CustomButton(text: 'Accept', onTap: () async {
+                            await AppointmentController.updateStatus(context,widget.appointment.id!,"accepted");
+                            widget.fetchAppointments();
+                          })),
+
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8,child: Container(decoration: BoxDecoration(
+                        color: Colors.white)))
                   ],
                 ),
               )

@@ -271,7 +271,7 @@ class _MainPageState extends State<MainPage> {
 
 
 
-          SizedBox(height: 20.0),
+          Visibility(visible: role=="patient",child: SizedBox(height: 20.0)),
           Visibility(
             visible: role=="patient",
             child: Padding(

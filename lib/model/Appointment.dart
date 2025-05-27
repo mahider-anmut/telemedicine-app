@@ -22,7 +22,7 @@ class Appointment {
       patientId: json['patientId'],
       doctorId: json['doctorId'],
       title: json['title'],
-      sessionPrice: json['sessionPrice'],
+      sessionPrice: json['sessionPrice']?.toDouble(),
       sessionDuration: json['sessionDuration'],
       sessionTime: json['sessionTime'],
       appointmentDate: json['appointmentDate'],
