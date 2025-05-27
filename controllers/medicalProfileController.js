@@ -10,7 +10,7 @@ let getMedicalProfileById = (req, res) => {
 };
 
 let getMedicalProfileByUserId = (req, res) => {
-  MedicalProfile.find({ doctorId: req.params.doctorId })
+  MedicalProfile.findOne({ doctorId: req.params.doctorId })
     .then((medicalProfiles) => res.json(medicalProfiles))
     .catch((err) => res.status(400).json({ message: err.message }));
 };
