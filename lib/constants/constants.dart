@@ -9,6 +9,7 @@ class Constants {
   static const String firstName = "firstName";
   static const String lastName = "lastName";
   static const String email = "email";
+  static const String phone = "phone";
   static const String approved = "approved";
   static const String role = "role";
   static const String status = "status";

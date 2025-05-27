@@ -38,6 +38,9 @@ class LocalAssets {
   static const String favouritesIcon = '$baseIcons/favourite.png';
   static const String favouritesAltIcon = '$baseIcons/favourite2.png';
   static const String scheduleIcon = '$baseIcons/timetable.png';
+  static const String translatorIcon = '$baseIcons/translator.png';
+  static const String themeIcon = '$baseIcons/themes.png';
+
 
 
 

@@ -3,7 +3,9 @@ import 'package:telemedicine/utils/utils.dart';
 
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
+import '../../constants/constants.dart';
 import '../../model/Chat.dart';
+import '../../service/shared_preference.dart';
 import '../../widgets/custom/detailstext1.dart';
 import '../../widgets/custom/detailstext2.dart';
 import 'consultationChat.dart';
@@ -18,6 +20,23 @@ class ChatItem extends StatefulWidget {
 }
 
 class _ChatItemState extends State<ChatItem> {
+
+  var role = "";
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    var userRole = await SharedPreference.getString(Constants.role);
+
+    setState(() {
+      role=userRole;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget chatItemView = GestureDetector(
@@ -37,7 +56,7 @@ class _ChatItemState extends State<ChatItem> {
                 ? NetworkImage(widget.chat.doctor!.profileImage!)
                 : AssetImage(LocalAssets.avatar) as ImageProvider,
           ),
-          title: Text1(text1: "${widget.chat.doctor?.firstName!} ${widget.chat.doctor?.lastName!}"),
+          title: Text1(text1: "${role=="doctor"?widget.chat.patient?.firstName:widget.chat.doctor?.firstName} ${role=="doctor"?widget.chat.patient?.lastName:widget.chat.doctor?.lastName}"),
           subtitle: Text2(text2: widget.chat.status=="closed"?"Chat is closed":widget.chat.lastMessage!),
           trailing: Padding(
             padding: const EdgeInsets.only(top: 8),

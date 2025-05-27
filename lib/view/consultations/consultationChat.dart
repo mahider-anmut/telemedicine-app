@@ -300,19 +300,26 @@ class _ConsultationChatState extends State<ConsultationChat> {
   bool isSending = false;
   File? imageFile;
 
+  var role = "";
+
+
+
   @override
   void initState() {
     super.initState();
+
     fetchMessages();
   }
 
   Future<void> fetchMessages() async {
     setState(() => isLoading = true);
     try {
+      var userRole = await SharedPreference.getString(Constants.role);
       var user = await SharedPreference.getString(Constants.userId);
       List<Message> messages = await ChatController.getAllMessageByChatId(widget.chat.id!);
 
       setState(() {
+        role=userRole;
         userId = user;
         allMessages = messages;
       });
@@ -355,7 +362,7 @@ class _ConsultationChatState extends State<ConsultationChat> {
     return Scaffold(
       body: Column(
         children: [
-          HeaderMiniChatCardWidget(title: "${widget.chat.doctor!.firstName} ${widget.chat.doctor!.lastName}",imgUrl: null),
+          HeaderMiniChatCardWidget(title: "${role=="doctor"?widget.chat.patient?.firstName:widget.chat.doctor?.firstName} ${role=="doctor"?widget.chat.patient?.lastName:widget.chat.doctor?.lastName}",imgUrl: null),
           SizedBox(height: 8.0),
           Expanded(
             child: ListView.builder(

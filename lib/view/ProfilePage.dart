@@ -306,8 +306,11 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isDarkTheme = false;
   String firstName = "";
   String lastName = "";
-  String companyName = "";
+  String phone = "";
+  String role = "";
+  String email = "";
   String _selectedLanguage = 'en';
+  String _selectedTheme = 'light';
 
   @override
   void initState() {
@@ -318,11 +321,21 @@ class _ProfilePageState extends State<ProfilePage> {
   checkFirst() async {
     String first = await SharedPreference.getString(Constants.firstName);
     String last = await SharedPreference.getString(Constants.lastName);
+    String userRole = await SharedPreference.getString(Constants.role);
+    String userEmail = await SharedPreference.getString(Constants.email);
+    String phoneNumber = await SharedPreference.getString(Constants.phone);
     String local = await SharedPreference.getString(Constants.appLang,"en");
+    bool isDarkTheme = await SharedPreference.getBool(Constants.isDarkMode,false);
+    String selectedTheme = isDarkTheme ?"dark":"light";
+
     setState(() {
       firstName = first;
       lastName = last;
+      role=userRole;
+      email=userEmail;
+      phone=phoneNumber;
       _selectedLanguage = local;
+      _selectedTheme = selectedTheme;
     });
   }
 
@@ -369,6 +382,111 @@ class _ProfilePageState extends State<ProfilePage> {
               // Add more languages here
             ],
           ),
+        );
+      },
+    );
+  }
+
+  void _showThemeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).translate('Theme')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<String>(
+                title: Text("Dark Theme"),
+                value: 'dark',
+                groupValue: _selectedTheme,
+                onChanged: (String? value) {
+                  setState(() {
+                    _selectedTheme = "dark";
+                  });
+                  Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                  Navigator.of(context).pop();
+                },
+              ),
+              RadioListTile<String>(
+                title: Text("Light Theme"),
+                value: 'light',
+                groupValue: _selectedTheme,
+                onChanged: (String? value) {
+                  setState(() {
+                    _selectedTheme = "light";
+                  });
+                  Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                  Navigator.of(context).pop();
+                },
+              ),
+              // Add more languages here
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showProfileDialog() {
+    TextEditingController firstNameController = TextEditingController(text: firstName);
+    TextEditingController lastNameController = TextEditingController(text: lastName);
+    TextEditingController phoneController = TextEditingController(text: phone);
+    TextEditingController emailController = TextEditingController(text: email);
+    TextEditingController roleController = TextEditingController(text: role);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Profile"),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: firstNameController,
+                  decoration: InputDecoration(labelText: "First Name"),
+                ),
+                TextField(
+                  controller: lastNameController,
+                  decoration: InputDecoration(labelText: "Last Name"),
+                ),
+                TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(labelText: "Phone"),
+                  keyboardType: TextInputType.phone,
+                ),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: "Email"),
+                  enabled: false,
+                ),
+                TextField(
+                  controller: roleController,
+                  decoration: InputDecoration(labelText: "Role"),
+                  enabled: false,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Update user profile logic here
+                setState(() {
+                  firstName = firstNameController.text;
+                  lastName = lastNameController.text;
+                  phone = phoneController.text;
+                });
+
+
+
+                Navigator.of(context).pop();
+              },
+              child: Text("Update"),
+            ),
+          ],
         );
       },
     );
@@ -460,17 +578,22 @@ class _ProfilePageState extends State<ProfilePage> {
             ProfileMenu(
               text: "My Account",
               icon: LocalAssets.userIcon,
-              press: () => {},
+              press: _showProfileDialog,
             ),
+            // ProfileMenu(
+            //   text: "Notifications",
+            //   icon: LocalAssets.notificationIcon,
+            //   press: () {},
+            // ),
             ProfileMenu(
-              text: "Notifications",
-              icon: LocalAssets.notificationIcon,
-              press: () {},
-            ),
-            ProfileMenu(
-              text: "Settings",
-              icon: LocalAssets.settingsIcon,
+              text: "Language",
+              icon: LocalAssets.translatorIcon,
               press: _showLanguageDialog,
+            ),
+            ProfileMenu(
+              text: "Theme",
+              icon: LocalAssets.themeIcon,
+              press: _showThemeDialog,
             ),
             ProfileMenu(
               text: "Help Center",
