@@ -117,7 +117,7 @@ const updateAppointmentStatus = async (req, res) => {
     }
 
     Notification.create({
-      userId: req.id,
+      userId: updatedAppointment.patientId,
       type: "account",
       title: "Appointment Status Updated",
       message: "your appointment status has been updated to " + appointmentStatus,

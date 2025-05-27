@@ -71,6 +71,7 @@ const paymentCallback = async (req, res) => {
         Chat.create({
             doctorId: appointmentId.doctorId,
             patientId: appointmentId.patientId,
+            appointmentId:appointmentId._id,
             status: "open",
             lastMessage: "",
             unreadCount: 0

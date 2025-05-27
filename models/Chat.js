@@ -12,6 +12,11 @@ const chatSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    appointmentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Appointment",
+      required: false,
+    },
     status:{
       type: String,
       enum: ["open", "closed"],
