@@ -283,6 +283,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine/constants/assets.dart';
+import 'package:telemedicine/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/colors.dart';
 import '../constants/constants.dart';
@@ -445,28 +447,33 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                  controller: firstNameController,
-                  decoration: InputDecoration(labelText: "First Name"),
-                ),
-                TextField(
-                  controller: lastNameController,
-                  decoration: InputDecoration(labelText: "Last Name"),
-                ),
-                TextField(
-                  controller: phoneController,
-                  decoration: InputDecoration(labelText: "Phone"),
-                  keyboardType: TextInputType.phone,
-                ),
-                TextField(
                   controller: emailController,
                   decoration: InputDecoration(labelText: "Email"),
                   enabled: false,
                 ),
+                SizedBox(height:16),
                 TextField(
                   controller: roleController,
                   decoration: InputDecoration(labelText: "Role"),
                   enabled: false,
                 ),
+                SizedBox(height:16),
+                TextField(
+                  controller: firstNameController,
+                  decoration: InputDecoration(labelText: "First Name"),
+                ),
+                SizedBox(height:16),
+                TextField(
+                  controller: lastNameController,
+                  decoration: InputDecoration(labelText: "Last Name"),
+                ),
+                SizedBox(height:16),
+                TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(labelText: "Phone"),
+                  keyboardType: TextInputType.phone,
+                ),
+
               ],
             ),
           ),
@@ -490,6 +497,15 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+  }
+
+  void _launchWebsite() async {
+    final Uri uri = Uri.parse("https://google.com");
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication); // opens in browser
+    } else {
+      Utils.showToast("Unable to open page",type: "error");
+    }
   }
 
 
@@ -533,22 +549,22 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                              icon: Icon(Icons.menu,color: AppColors.mainIconColor,),
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                            ),
-
-                            IconButton(
-                              icon: Icon(Icons.notifications,color: AppColors.mainIconColor!,),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => NotificationPage()),
-                                );
-                              },
-                            ),
+                            // IconButton(
+                            //   icon: Icon(Icons.menu,color: AppColors.mainIconColor,),
+                            //   onPressed: () {
+                            //     Scaffold.of(context).openDrawer();
+                            //   },
+                            // ),
+                              Spacer()
+                            // IconButton(
+                            //   icon: Icon(Icons.notifications,color: AppColors.mainIconColor!,),
+                            //   onPressed: () {
+                            //     Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(builder: (context) => NotificationPage()),
+                            //     );
+                            //   },
+                            // ),
                           ],
                         ),
                       ),
@@ -598,7 +614,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ProfileMenu(
               text: "Help Center",
               icon: LocalAssets.helpIcon,
-              press: () {},
+              press: _launchWebsite,
             ),
             ProfileMenu(
               text: "Log Out",
