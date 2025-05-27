@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:telemedicine/dto/Doctor.dart';
+import 'package:telemedicine/model/MedicalProfile.dart';
 import 'package:telemedicine/model/Schedule.dart';
 import 'package:telemedicine/model/User.dart';
 
@@ -36,4 +37,31 @@ class DoctorController {
     }
   }
 
+  static getMedicalProfile() async {
+    var userId = await SharedPreference.getString(Constants.userId);
+    var res = await Api.get(ApiEndpoints.getMedicalProfile(userId));
+
+    if (res["statusCode"] == 200 || res["statusCode"] == 201) {
+      MedicalProfile medicalProfile = MedicalProfile.fromJson(res);
+      return medicalProfile;
+    }else{
+      Utils.showToast("Unable to get Schedule.",type: "error");
+    }
+  }
+
+  static updateMedicalProfile(MedicalProfile medicalProfile) async {
+
+    var res;
+    if(medicalProfile.id!=null){
+      res = await Api.put(ApiEndpoints.updateMedicalProfile(medicalProfile.id!),medicalProfile.toJson());
+    }else{
+      res = await Api.post(ApiEndpoints.createMedicalProfile,medicalProfile.toJson());
+    }
+
+    if (res["statusCode"] == 200 || res["statusCode"] == 201) {
+      Utils.showToast("Updated Successfully.");
+    }else{
+      Utils.showToast("Unable to update appointment.",type: "error");
+    }
+  }
 }

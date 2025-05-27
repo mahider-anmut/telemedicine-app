@@ -1,5 +1,4 @@
 {
-  "SignOut": "Sign out",
   "Logout": "Logout",
   "LogoutConfirmationMessage": "Are you sure you want to logout of your account?",
 
@@ -15,9 +14,6 @@
 
   "Home": "Home",
   "Profile": "Profile",
-  "QRCodeScannedSuccessfully": "QR code scanned successfully",
-  "InvalidQRCode":  "Invalid QR code",
-  "CameraPermissionDenied": "Camera permission denied",
 
   "Notifications": "Notifications",
   "All": "All",
@@ -37,6 +33,7 @@
 
 
   "forgotPasswordTitle": "Forget your password?",
+  "forgotPasswordDescription": "Type your registered Email and we will send you a password reset link to change your password",
   "email": "Email",
   "sendResetLink": "Send Reset Link",
   "alreadyHaveAccount": "Already have an account? ",
@@ -63,6 +60,21 @@
   "phoneNumber": "Phone Number",
   "submit": "Submit",
 
-  "Language": "Language"
+  "Language": "Language",
+
+  "users": "Users",
+  "doctors": "Doctors",
+  "Consultation": "Consultation",
+  "Appointments": "Appointments",
+  "hospitals": "Hospitals",
+  "pharmacy": "Pharmacy",
+
+  "requestAmbulance": "Request Ambulance",
+  "locationPermissionDenied": "",
+  "confirmLocation": "Confirm your location",
+  "Favourites": "Favourites",
+
+  "ScheduleManager": "Schedule Manager",
+  "MedicalProfile": "Medical Profile"
 
 }

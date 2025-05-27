@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:telemedicine/utils/utils.dart';
 
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
@@ -62,60 +63,60 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         style: AppTextStyles.bigTitleStyle(context),
                       ),
                       const SizedBox(height: 50.0),
-                      TabBar(
-                        controller: _tabController,
-                        tabs: [
-                          Tab(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // const Icon(Icons.person),
-                                Image(
-                                  image: AssetImage(LocalAssets.userIcon),
-                                  width: 18, // Optional: adjust size
-                                  height: 18,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(localizations.translate("users")),
-                              ],
-                            ),
-                          ),
-                          Tab(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image(
-                                  image: AssetImage(LocalAssets.doctorIcon),
-                                  width: 20, // Optional: adjust size
-                                  height: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(localizations.translate("doctors")),
-                              ],
-                            ),
-                          )
-                          // Tab(icon: const Icon(Icons.person),text: localizations.translate("users")),
-                          // Tab(icon: const Icon(Icons.medical_services),text: localizations.translate("doctors")),
-                        ],
-                        isScrollable: false,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicatorColor: AppTheme.getThemeExtension(context).primaryColor!,
-                        labelColor: AppTheme.getThemeExtension(context).primaryLightColor!,
-                        unselectedLabelColor: AppTheme.getThemeExtension(context).secondaryAltColor!,
-                        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                        onTap: (index) {
-                          setState(() {
-                            switch (index) {
-                              case 0:
-                                selectedRole = Constants.patientRole;
-                                break;
-                              case 1:
-                                selectedRole = Constants.doctorRole;
-                                break;
-                            }
-                          });
-                        },
-                      ),
+                      // TabBar(
+                      //   controller: _tabController,
+                      //   tabs: [
+                      //     Tab(
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           // const Icon(Icons.person),
+                      //           Image(
+                      //             image: AssetImage(LocalAssets.userIcon),
+                      //             width: 18, // Optional: adjust size
+                      //             height: 18,
+                      //           ),
+                      //           const SizedBox(width: 8),
+                      //           Text(localizations.translate("users")),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     Tab(
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           Image(
+                      //             image: AssetImage(LocalAssets.doctorIcon),
+                      //             width: 20, // Optional: adjust size
+                      //             height: 20,
+                      //           ),
+                      //           const SizedBox(width: 8),
+                      //           Text(localizations.translate("doctors")),
+                      //         ],
+                      //       ),
+                      //     )
+                      //     // Tab(icon: const Icon(Icons.person),text: localizations.translate("users")),
+                      //     // Tab(icon: const Icon(Icons.medical_services),text: localizations.translate("doctors")),
+                      //   ],
+                      //   isScrollable: false,
+                      //   indicatorSize: TabBarIndicatorSize.tab,
+                      //   indicatorColor: AppTheme.getThemeExtension(context).primaryColor!,
+                      //   labelColor: AppTheme.getThemeExtension(context).primaryLightColor!,
+                      //   unselectedLabelColor: AppTheme.getThemeExtension(context).secondaryAltColor!,
+                      //   labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      //   onTap: (index) {
+                      //     setState(() {
+                      //       switch (index) {
+                      //         case 0:
+                      //           selectedRole = Constants.patientRole;
+                      //           break;
+                      //         case 1:
+                      //           selectedRole = Constants.doctorRole;
+                      //           break;
+                      //       }
+                      //     });
+                      //   },
+                      // ),
                       const SizedBox(height: 15.0),
                       SizedBox(
                         height: 56,
@@ -215,7 +216,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         children: [
                           InkWell(
                             onTap: () {
-                              // Add your onTap logic here
+                              Utils.showToast("This feature is under development",type: "info");
                             },
                             child: Image.asset(
                               LocalAssets.fbIcon, // Path to your PNG icon
@@ -225,7 +226,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           ),
                           InkWell(
                             onTap: () {
-                              // Add your onTap logic here
+                              Utils.showToast("This feature is under development",type: "info");
                             },
                             child: Image.asset(
                               LocalAssets.googleIcon, // Path to your PNG icon
@@ -235,7 +236,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           ),
                           InkWell(
                             onTap: () {
-                              // Add your onTap logic here
+                              Utils.showToast("This feature is under development",type: "info");
                             },
                             child: Image.asset(
                               LocalAssets.appleIcon, // Path to your PNG icon

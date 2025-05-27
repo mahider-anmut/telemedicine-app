@@ -95,7 +95,9 @@ class _AppointmentItemState extends State<AppointmentItem> {
                           widget.fetchAppointments();
                         })),
                          const SizedBox(width: 10,),
-                        Flexible(child: CustomButton(text: 'Open Chat', onTap: () {})),
+                        Flexible(child: CustomButton(text: 'Open Chat', onTap: () {
+
+                        })),
 
                       ],
                     )

@@ -6,6 +6,7 @@ import '../controller/notificationsController.dart';
 import '../model/Notification.dart' as Notif;
 import '../service/localization.dart';
 import '../utils/themes.dart';
+import '../widgets/headerMiniCardWidget.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});
@@ -13,27 +14,28 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.getThemeExtension(context).primaryBGColor!,
-      appBar: AppBar(
-        backgroundColor: AppTheme.getThemeExtension(context).primaryBGColor!,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: AppTheme.getThemeExtension(context).secondaryIconColor!,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          AppLocalizations.of(context).translate('Notifications'),
-          style: AppTextStyles.navigationTextStyle(context),
-        ),
-      ),
+      // backgroundColor: AppTheme.getThemeExtension(context).primaryBGColor!,
+      // appBar: AppBar(
+      //   backgroundColor: AppTheme.getThemeExtension(context).primaryBGColor!,
+      //   leading: IconButton(
+      //     icon: Icon(
+      //       Icons.arrow_back,
+      //       color: AppTheme.getThemeExtension(context).secondaryIconColor!,
+      //     ),
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //   ),
+      //   title: Text(
+      //     AppLocalizations.of(context).translate('Notifications'),
+      //     style: AppTextStyles.navigationTextStyle(context),
+      //   ),
+      // ),
       body: DefaultTabController(
         length: 3,
         child: Column(
           children: [
+            HeaderMiniCardWidget(title: "Notification"),
             TabBar(
               tabs: [
                 Tab(text: AppLocalizations.of(context).translate('All')),

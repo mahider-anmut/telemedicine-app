@@ -3,6 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:telemedicine/utils/utils.dart';
 
 import '../../providers/themeProvider.dart';
 import '../../service/localization.dart';
@@ -224,7 +225,8 @@ class _AmbulanceModalState extends State<AmbulanceModal> {
                       child: CustomElevatedButton(
                         label: AppLocalizations.of(context).translate('requestAmbulance'),
                         onPressed: () async {
-
+                          Utils.showToast("Ambulance Request has Dispatched");
+                          Navigator.pop(context);
                         },
                       ),
                     ),

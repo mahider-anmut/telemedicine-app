@@ -6,7 +6,9 @@ import 'package:telemedicine/view/appointments/appointmentHomePage.dart';
 import 'package:telemedicine/view/consultations/consultationHomePage.dart';
 import 'package:telemedicine/view/mainPage/mainPage.dart';
 
+import '../constants/constants.dart';
 import '../service/localization.dart';
+import '../service/shared_preference.dart';
 import '../utils/themes.dart';
 import '../utils/utils.dart';
 import 'ProfilePage.dart';
@@ -22,6 +24,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  String role = "";
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  Future<void> init() async {
+    var userRole = await SharedPreference.getString(Constants.role);
+    setState(() {
+      role = userRole;
+    });
+  }
 
   String activePage = "homepage";
 
@@ -48,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppTheme.getThemeExtension(context).primaryBGColor!,
         drawer: SideMenu(),
         body: getPageWidget(activePage),
-        bottomNavigationBar: Container(
+        bottomNavigationBar: role=="-"?Container(
           padding: const EdgeInsets.only(bottom: 8.0),
           decoration: BoxDecoration(
             border: Border(
@@ -260,41 +277,45 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          // shape: const CircleBorder(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-            side: BorderSide(
-              color: AppTheme.getThemeExtension(context).primaryBGColor!,
-              width: 2,
+        ):null,
+        floatingActionButton: Visibility(
+          // visible: role=="patient",
+          visible: false,
+          child: FloatingActionButton(
+            // shape: const CircleBorder(),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+              side: BorderSide(
+                color: AppTheme.getThemeExtension(context).primaryBGColor!,
+                width: 2,
+              ),
             ),
-          ),
-          backgroundColor: AppTheme.getThemeExtension(context).primaryLightColor!,
-          // backgroundColor: AppTheme.getThemeExtension(context).primaryColor!,
-          onPressed: () async {
-            bool hasPermission = await requestLocationPermission();
-            if (hasPermission) {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                enableDrag: false,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32.0),
-                    topRight: Radius.circular(32.0),
+            backgroundColor: AppTheme.getThemeExtension(context).primaryLightColor!,
+            // backgroundColor: AppTheme.getThemeExtension(context).primaryColor!,
+            onPressed: () async {
+              bool hasPermission = await requestLocationPermission();
+              if (hasPermission) {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  enableDrag: false,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32.0),
+                      topRight: Radius.circular(32.0),
+                    ),
                   ),
-                ),
-                builder: (context) => const AmbulanceModal(),
-              );
-            } else {
-              Utils.showToast(AppLocalizations.of(context).translate('locationPermissionDenied'),type: "info");
-            }
-          },
-          child: Image(
-            image: AssetImage(LocalAssets.ambulanceIcon),
-            width: 32, // Optional: adjust size
-            height: 32,
+                  builder: (context) => const AmbulanceModal(),
+                );
+              } else {
+                Utils.showToast(AppLocalizations.of(context).translate('locationPermissionDenied'),type: "info");
+              }
+            },
+            child: Image(
+              image: AssetImage(LocalAssets.ambulanceIcon),
+              width: 32, // Optional: adjust size
+              height: 32,
+            ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

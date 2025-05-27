@@ -11,7 +11,7 @@ class Slot {
     return Slot(
       availableSlots: availableSlots,
       sessionDuration: json['sessionDuration'],
-      sessionPrice: json['sessionPrice'],
+      sessionPrice: json['sessionPrice']?.toDouble(),
     );
   }
 

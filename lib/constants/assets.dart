@@ -25,6 +25,7 @@ class LocalAssets {
   static const String checkupIcon = '$baseIcons/checkup.png';
   static const String reportIcon = '$baseIcons/report.png';
   static const String notificationIcon = '$baseIcons/notification.png';
+  static const String notificationAltIcon = '$baseIcons/notificationAlt.png';
   static const String userIcon = '$baseIcons/user.png';
   static const String profileIcon = '$baseIcons/profile.png';
   static const String settingsIcon = '$baseIcons/settings.png';
@@ -33,6 +34,7 @@ class LocalAssets {
   static const String homeIcon = '$baseIcons/home.png';
   static const String appointmentIcon = '$baseIcons/appointment2.png';
   static const String consultingIcon = '$baseIcons/consultation.png';
+  static const String consultingAltIcon = '$baseIcons/consulting.png';
   static const String favouritesIcon = '$baseIcons/favourite.png';
   static const String favouritesAltIcon = '$baseIcons/favourite2.png';
   static const String scheduleIcon = '$baseIcons/timetable.png';

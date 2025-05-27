@@ -46,21 +46,21 @@ class HeaderCardWidget extends StatelessWidget {
                         style: AppTextStyles.headerTextLabelStyle,
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundColor: AppColors.buttonColor,
-                      child: IconButton(
-                        icon: Icon(Icons.notifications,color: AppColors.mainIconColor!,),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => NotificationPage()),
-                          );
-                        },
-                      )
-
-                    )
-                    ,
+                    SizedBox(width: 40,)
+                    // CircleAvatar(
+                    //   radius: 20,
+                    //   backgroundColor: AppColors.buttonColor,
+                    //   child: IconButton(
+                    //     icon: Icon(Icons.notifications,color: AppColors.mainIconColor!,),
+                    //     onPressed: () {
+                    //       Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(builder: (context) => NotificationPage()),
+                    //       );
+                    //     },
+                    //   )
+                    //
+                    // ),
                   ],
                 ),
               ),

@@ -118,152 +118,161 @@ class _DoctorSchedulePageState extends State<DoctorSchedulePage> {
     final setupExists = schedule?.sessionDuration != null && schedule?.sessionPrice != null;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const HeaderMiniCardWidget(title: "Manage Schedule",),
-            SizedBox(height: 8.0),
-            // Session Setup Card
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Card(
-                elevation: 6,
-                margin: const EdgeInsets.only(bottom: 16),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSectionTitle("Session Setup"),
-                      Row(
-                        children: [
-                          Expanded(child: _buildInputField("Duration (min)", _durationController)),
-                          const SizedBox(width: 8),
-                          Expanded(child: _buildInputField("Price (ETB)", _priceController)),
-                        ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const HeaderMiniCardWidget(title: "Manage Schedule"),
+          const SizedBox(height: 8.0),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // const HeaderMiniCardWidget(title: "Manage Schedule",),
+                  // SizedBox(height: 8.0),
+                  // Session Setup Card
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Card(
+                      elevation: 6,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildSectionTitle("Session Setup"),
+                            Row(
+                              children: [
+                                Expanded(child: _buildInputField("Duration (min)", _durationController)),
+                                const SizedBox(width: 8),
+                                Expanded(child: _buildInputField("Price (ETB)", _priceController)),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+            
+                            Row(
+                              children: [
+                                Spacer(),
+                                ElevatedButton.icon(
+                                  onPressed: _saveSetup,
+                                  icon: const Icon(Icons.save),
+                                  label: const Text("Save"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 16),
-
-                      Row(
-                        children: [
-                          Spacer(),
-                          ElevatedButton.icon(
-                            onPressed: _saveSetup,
-                            icon: const Icon(Icons.save),
-                            label: const Text("Save"),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+            
+                  // Schedule Card (shown only if setup exists)
+                  if (setupExists)
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16,left: 8,right: 8),
+                        child: ExpansionPanelList(
+                          expansionCallback: (int index, bool isExpanded) {
+                            setState(() {
+                              if (index == 0) _weeklyExpanded = !_weeklyExpanded;
+                              if (index == 1) _exceptionExpanded = !_exceptionExpanded;
+                            });
+                          },
+                          children: [
+                            ExpansionPanel(
+                              isExpanded: _weeklyExpanded,
+                              headerBuilder: (context, isExpanded) => ListTile(
+                                title: const Text("Weekly Schedule"),
+                              ),
+                              body: Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: previewWeeklySchedule(schedule?.weeklySchedule ?? WeeklySchedule()),
+                                    ),
+            
+                                    const SizedBox(height: 16),
+            
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: ElevatedButton.icon(
+                                            onPressed: _editWeeklySchedule,
+                                            icon: const Icon(Icons.edit),
+                                            label: const Text("Edit"),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: ElevatedButton.icon(
+                                            onPressed: _saveWeeklySchedule,
+                                            icon: const Icon(Icons.save),
+                                            label: const Text("Save"),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+            
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ExpansionPanel(
+                              isExpanded: _exceptionExpanded,
+                              headerBuilder: (context, isExpanded) => ListTile(
+                                title: const Text("Exception Days"),
+                              ),
+                              body: Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: previewExceptionSchedule(schedule?.exceptions ?? []),
+                                    ),
+                                    const SizedBox(height: 16),
+            
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: ElevatedButton.icon(
+                                            onPressed: _editExceptions,
+                                            icon: const Icon(Icons.edit),
+                                            label: const Text("Edit"),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: ElevatedButton.icon(
+                                            onPressed: _saveExceptionSchedule,
+                                            icon: const Icon(Icons.save),
+                                            label: const Text("Save"),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
-
-            // Schedule Card (shown only if setup exists)
-            if (setupExists)
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16,left: 8,right: 8),
-                  child: ExpansionPanelList(
-                    expansionCallback: (int index, bool isExpanded) {
-                      setState(() {
-                        if (index == 0) _weeklyExpanded = !_weeklyExpanded;
-                        if (index == 1) _exceptionExpanded = !_exceptionExpanded;
-                      });
-                    },
-                    children: [
-                      ExpansionPanel(
-                        isExpanded: _weeklyExpanded,
-                        headerBuilder: (context, isExpanded) => ListTile(
-                          title: const Text("Weekly Schedule"),
-                        ),
-                        body: Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                child: previewWeeklySchedule(schedule?.weeklySchedule ?? WeeklySchedule()),
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: ElevatedButton.icon(
-                                      onPressed: _editWeeklySchedule,
-                                      icon: const Icon(Icons.edit),
-                                      label: const Text("Edit"),
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: ElevatedButton.icon(
-                                      onPressed: _saveWeeklySchedule,
-                                      icon: const Icon(Icons.save),
-                                      label: const Text("Save"),
-                                    ),
-                                  )
-                                ],
-                              ),
-
-                            ],
-                          ),
-                        ),
-                      ),
-                      ExpansionPanel(
-                        isExpanded: _exceptionExpanded,
-                        headerBuilder: (context, isExpanded) => ListTile(
-                          title: const Text("Exception Days"),
-                        ),
-                        body: Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                child: previewExceptionSchedule(schedule?.exceptions ?? []),
-                              ),
-                              const SizedBox(height: 16),
-
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: ElevatedButton.icon(
-                                      onPressed: _editExceptions,
-                                      icon: const Icon(Icons.edit),
-                                      label: const Text("Edit"),
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: ElevatedButton.icon(
-                                      onPressed: _saveExceptionSchedule,
-                                      icon: const Icon(Icons.save),
-                                      label: const Text("Save"),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

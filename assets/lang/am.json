@@ -1,5 +1,4 @@
 {
-  "SignOut": "ውጣ",
   "Logout": "ውጣ",
   "LogoutConfirmationMessage": "ከመለያዎ ለመውጣት እርግጠኛ ነህ/ነሽ?",
 
@@ -36,6 +35,7 @@
   "About": "ስለ",
 
   "forgotPasswordTitle": "የይለፍ ቃልዎን ረስተዋል?",
+  "forgotPasswordDescription": "Type your registered Email and we will send you a password reset link to change your password",
   "email": "ኢሜይል",
   "sendResetLink": "የማስጀመሪያ አገናኝ ላክ",
   "alreadyHaveAccount": "አንድ መለያ አለህ/አለሽ?",
@@ -62,5 +62,11 @@
   "phoneNumber": "ስልክ ቁጥር",
   "submit": "አስገባ",
 
-  "Language": "ቋንቋ"
+  "Language": "ቋንቋ",
+
+  "users": "Users",
+  "doctors": "Doctors",
+
+  "ScheduleManager": "Schedule Manager",
+  "MedicalProfile": "Medical Profile"
 }
